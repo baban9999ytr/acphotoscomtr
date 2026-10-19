@@ -1,119 +1,209 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AC Photos | Sizin İçin Hazırlanıyoruz...</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@200;300;400;600&display=swap" rel="stylesheet">
-    <meta name="description" content="Yeni web sitemizle çok yakında karşınızdayız. AC Photos çalışmalarını incelemek için bizi takip edin.">
-    <meta name="theme-color" content="#030712">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://acphotos.com.tr/">
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://acphotos.com.tr/"> 
-    <meta property="twitter:image" content="https://acphotos.com.tr/assets/assets.png">
-    <meta property="og:image" content="https://acphotos.com.tr/assets.png">
-    <meta property="twitter:image" content="https://acphotos.com.tr/assets.png">
-    <meta property="twitter:title" content="AC Photos | Sizin İçin Hazırlanıyoruz...">
-    <meta property="twitter:description" content="Yeni web sitemizle çok yakında karşınızdayız. AC Photos çalışmalarını incelemek için ziyaret edin.">
-    <meta property="og:title" content="AC Photos | Sizin İçin Hazırlanıyoruz...">
-    <meta property="og:description" content="Yeni web sitemizle çok yakında karşınızdayız. AC Photos çalışmalarını incelemek için ziyaret edin.">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@200;300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <meta
+      name="description"
+      content="Yeni web sitemizle çok yakında karşınızdayız. AC Photos çalışmalarını incelemek için bizi takip edin."
+    />
+    <meta name="theme-color" content="#030712" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://acphotos.com.tr/" />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://acphotos.com.tr/" />
+    <meta
+      property="twitter:image"
+      content="https://acphotos.com.tr/assets/assets.png"
+    />
+    <meta property="og:image" content="https://acphotos.com.tr/assets.png" />
+    <meta
+      property="twitter:image"
+      content="https://acphotos.com.tr/assets.png"
+    />
+    <meta
+      property="twitter:title"
+      content="AC Photos | Sizin İçin Hazırlanıyoruz..."
+    />
+    <meta
+      property="twitter:description"
+      content="Yeni web sitemizle çok yakında karşınızdayız. AC Photos çalışmalarını incelemek için ziyaret edin."
+    />
+    <meta
+      property="og:title"
+      content="AC Photos | Sizin İçin Hazırlanıyoruz..."
+    />
+    <meta
+      property="og:description"
+      content="Yeni web sitemizle çok yakında karşınızdayız. AC Photos çalışmalarını incelemek için ziyaret edin."
+    />
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Montserrat', 'sans-serif'],
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 1.5s ease-out',
-                        'slide-up': 'slideUp 1s ease-out 0.5s both',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        slideUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
-                    }
-                }
-            }
-        }
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              display: ["Montserrat", "sans-serif"],
+            },
+            animation: {
+              "fade-in": "fadeIn 1.5s ease-out",
+              "slide-up": "slideUp 1s ease-out 0.5s both",
+            },
+            keyframes: {
+              fadeIn: {
+                "0%": { opacity: "0" },
+                "100%": { opacity: "1" },
+              },
+              slideUp: {
+                "0%": { opacity: "0", transform: "translateY(20px)" },
+                "100%": { opacity: "1", transform: "translateY(0)" },
+              },
+            },
+          },
+        },
+      };
     </script>
     <style>
-        .bg-pattern {
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.04) 0%, transparent 50%),
-                radial-gradient(circle at 85% 30%, rgba(255, 255, 255, 0.04) 0%, transparent 50%);
-        }
+      .bg-pattern {
+        background-image:
+          radial-gradient(
+            circle at 15% 50%,
+            rgba(255, 255, 255, 0.04) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 85% 30%,
+            rgba(255, 255, 255, 0.04) 0%,
+            transparent 50%
+          );
+      }
     </style>
-</head>
-<body class="bg-gray-950 text-white font-sans antialiased min-h-screen flex items-center justify-center relative overflow-hidden bg-pattern">
-    
-    <div class="absolute inset-0 bg-gradient-to-b from-gray-900/50 to-black/90 z-0"></div>
+  </head>
+  <body
+    class="bg-gray-950 text-white font-sans antialiased min-h-screen flex items-center justify-center relative overflow-hidden bg-pattern"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-b from-gray-900/50 to-black/90 z-0"
+    ></div>
 
-    <main class="relative z-10 w-full max-w-4xl mx-auto px-6 py-12 flex flex-col items-center text-center animate-fade-in">
-        
-        <div class="mb-8">
-            <h1 class="font-display text-4xl md:text-6xl font-semibold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-500 uppercase">
-                AC Photos
-            </h1>
-            <div class="h-0.5 w-24 bg-gray-500 mx-auto mt-4 rounded-full opacity-50"></div>
-        </div>
+    <main
+      class="relative z-10 w-full max-w-4xl mx-auto px-6 py-12 flex flex-col items-center text-center animate-fade-in"
+    >
+      <div class="mb-8">
+        <h1
+          class="font-display text-4xl md:text-6xl font-semibold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-500 uppercase"
+        >
+          AC Photos
+        </h1>
+        <div
+          class="h-0.5 w-24 bg-gray-500 mx-auto mt-4 rounded-full opacity-50"
+        ></div>
+      </div>
 
-        <h2 class="text-3xl md:text-5xl font-light text-gray-100 mb-6 leading-tight animate-slide-up">
-            Sizin için hazırlanıyoruz<span class="animate-pulse">....</span>
-        </h2>
-        
-        <p class="text-gray-400 text-lg md:text-xl max-w-2xl mb-12 animate-slide-up" style="animation-delay: 0.7s;">
-            Yeni web sitemizle çok yakında karşınızdayız. Bu süreçte çalışmalarımızı incelemek veya bizimle iletişime geçmek için aşağıdaki bağlantıları kullanabilirsiniz.
-        </p>
+      <h2
+        class="text-3xl md:text-5xl font-light text-gray-100 mb-6 leading-tight animate-slide-up"
+      >
+        Sizin için hazırlanıyoruz<span class="animate-pulse">....</span>
+      </h2>
 
-        <div class="flex flex-col sm:flex-row gap-5 w-full sm:w-auto animate-slide-up" style="animation-delay: 0.9s;">
-            
-            <a href="https://www.instagram.com/acphotos.tr/" target="_blank" rel="noopener noreferrer" 
-               class="group flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-gradient-to-tr from-yellow-500 via-pink-500 to-purple-600 text-white font-medium transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(236,72,153,0.5)] focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 focus:ring-offset-gray-900">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:-rotate-6">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                </svg>
-                <span>Instagram'da Takip Et</span>
-            </a>
+      <p
+        class="text-gray-400 text-lg md:text-xl max-w-2xl mb-12 animate-slide-up"
+        style="animation-delay: 0.7s"
+      >
+        Yeni web sitemizle çok yakında karşınızdayız. Bu süreçte çalışmalarımızı
+        incelemek veya bizimle iletişime geçmek için aşağıdaki bağlantıları
+        kullanabilirsiniz.
+      </p>
 
-            <a href="https://acphotos.free.nf/?i=1" target="_blank" rel="noopener noreferrer" 
-               class="group flex items-center justify-center gap-3 px-8 py-4 rounded-full border border-gray-600 bg-gray-800/50 backdrop-blur-sm text-gray-200 font-medium transition-all duration-300 hover:bg-gray-700 hover:border-gray-400 hover:text-white hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 group-hover:text-white transition-colors">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="2" y1="12" x2="22" y2="12"></line>
-                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                </svg>
-                <span>Mevcut Sitemize Göz Atın</span>
-            </a>
+      <div
+        class="flex flex-col sm:flex-row gap-5 w-full sm:w-auto animate-slide-up"
+        style="animation-delay: 0.9s"
+      >
+        <a
+          href="https://www.instagram.com/acphotos.tr/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-gradient-to-tr from-yellow-500 via-pink-500 to-purple-600 text-white font-medium transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(236,72,153,0.5)] focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="transition-transform group-hover:-rotate-6"
+          >
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+          <span>Instagram'da Takip Et</span>
+        </a>
 
-        </div>
+        <a
+          href="https://acphotos.free.nf/?i=1"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group flex items-center justify-center gap-3 px-8 py-4 rounded-full border border-gray-600 bg-gray-800/50 backdrop-blur-sm text-gray-200 font-medium transition-all duration-300 hover:bg-gray-700 hover:border-gray-400 hover:text-white hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="text-gray-400 group-hover:text-white transition-colors"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path
+              d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+            ></path>
+          </svg>
+          <span>Mevcut Sitemize Göz Atın</span>
+        </a>
+      </div>
     </main>
 
     <footer class="absolute bottom-6 w-full text-center z-10 opacity-60">
-        <p class="text-sm text-gray-500 font-display tracking-wider">
-            &copy; 2026 AC PHOTOS. TÜM HAKLARI SAKLIDIR. 
-            <a href="https://github.com/baban9999ytr/acphotoscomtr" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors duration-300">
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-  </svg>
-  GitHub
-</a>
-
-            
-        </p>
+      <p class="text-sm text-gray-500 font-display tracking-wider">
+        &copy; 2026 AC PHOTOS. TÜM HAKLARI SAKLIDIR.
+        <a
+          href="https://github.com/baban9999ytr/acphotoscomtr"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors duration-300"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+            />
+          </svg>
+          GitHub
+        </a>
+      </p>
     </footer>
-
-</body>
+  </body>
 </html>
