@@ -1,0 +1,51 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import AlbumCard from "../../components/AlbumCard.astro";
+import { fixtures } from "../../lib/fixtures";
+import { demoMode } from "../../lib/model";
+---
+
+<Layout title="Albümler">
+  <section class="wrap section">
+    <div class="page-intro">
+      <h1>
+        Her albüm,
+        <br />
+        yeni bir hikâye.
+      </h1>
+      <p>
+        Detaylarda durun. Bir kareden diğerine,
+        <br />
+        kendi ritminizle keşfedin.
+      </p>
+    </div>
+    <div class="filters" aria-label="Albüm kategorileri" data-filters>
+      <button aria-pressed="true" data-filter="all">
+        Tümü
+      </button>
+      {demoMode &&
+        fixtures.categories.map((c) => (
+          <button aria-pressed="false" data-filter={c.id}>
+            {c.name}
+          </button>
+        ))}
+    </div>
+    <div class="album-grid" data-public-projects>
+      {demoMode &&
+        fixtures.projects.map((project) => (
+          <AlbumCard
+            project={project}
+            photo={fixtures.project_images.find(
+              (i) => i.project_id === project.id,
+            )}
+          />
+        ))}
+    </div>
+    <p data-empty hidden>
+      Bu kategoride henüz albüm bulunmuyor.
+    </p>
+  </section>
+  <script>
+    import "../../scripts/public";
+  </script>
+</Layout>

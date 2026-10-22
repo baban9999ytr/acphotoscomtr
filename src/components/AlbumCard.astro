@@ -1,0 +1,33 @@
+---
+import type { Project, Photo } from "../lib/model";
+interface Props {
+  project: Project;
+  photo?: Photo;
+}
+const { project, photo } = Astro.props;
+---
+
+<a
+  class="album-card"
+  href={`/albumler/${project.slug}/`}
+  data-category={project.category_id}
+>
+  {photo && (
+    <div class="photo-frame">
+      <img
+        src={photo.paths[1]}
+        srcset={`${photo.paths[0]} 480w, ${photo.paths[1]} 1000w, ${photo.paths[2]} 1800w`}
+        sizes="(max-width: 700px) 92vw, 48vw"
+        width={photo.width}
+        height={photo.height}
+        alt={photo.alt}
+        loading="lazy"
+      />
+    </div>
+  )}
+  <div class="album-caption">
+    <h3>{project.title}</h3>
+    <span aria-hidden="true">↗</span>
+  </div>
+  <p>{project.description}</p>
+</a>

@@ -1,0 +1,112 @@
+---
+import "../styles/global.css";
+import "@fontsource/manrope/latin-ext-400.css";
+import "@fontsource/manrope/latin-400.css";
+import "@fontsource/manrope/latin-600.css";
+import "@fontsource/cormorant-garamond/latin-400.css";
+import "@fontsource/manrope/latin-ext-600.css";
+import "@fontsource/cormorant-garamond/latin-ext-400.css";
+import { demoMode } from "../lib/model";
+import { buildContent } from "../lib/build-content";
+interface Props {
+  title: string;
+  description?: string;
+  admin?: boolean;
+}
+const { settings } = await buildContent();
+const {
+  title,
+  description = settings.seo_description,
+  admin = false,
+} = Astro.props;
+const path = Astro.url.pathname === "/404/" ? "/404.html" : Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} | ACPhotos</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={new URL(path, "https://acphotos.com.tr")} />
+    <meta name="theme-color" content="#080808" />
+    <meta property="og:title" content={`${title} | ACPhotos`} />
+    <meta property="og:description" content={description} />
+    <meta
+      property="og:url"
+      content={new URL(path, "https://acphotos.com.tr")}
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:image" content="https://acphotos.com.tr/social.jpg" />
+    <link rel="icon" href="/favicon.svg" />
+    {(admin ||
+      demoMode ||
+      path.includes("goruntule") ||
+      path.includes("404")) && (
+      <meta name="robots" content="noindex, nofollow" />
+    )}
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body data-mode={demoMode ? "demo" : "supabase"}>
+    <a class="skip" href="#main">
+      İçeriğe geç
+    </a>
+    <header class="header wrap">
+      <a class="brand" href="/" aria-label="ACPhotos ana sayfa">
+        AC<span>Photos</span>
+      </a>
+      <button
+        class="menu-toggle"
+        aria-expanded="false"
+        aria-controls="navigation"
+      >
+        Menü <span aria-hidden="true">☰</span>
+      </button>
+      <nav id="navigation" aria-label="Ana gezinme">
+        {[
+          ["/albumler/", "Albümler"],
+          ["/hakkimizda/", "Hakkımızda"],
+          ["/blog/", "Blog"],
+          ["/iletisim/", "İletişim"],
+        ].map(([href, label]) => (
+          <a
+            href={href}
+            aria-current={path.startsWith(href!) ? "page" : undefined}
+          >
+            {label}
+          </a>
+        ))}
+      </nav>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer
+      class="footer wrap"
+      itemscope
+      itemtype="https://schema.org/Organization"
+    >
+      <a class="brand" href="/" itemprop="name">
+        ACPhotos
+      </a>
+      <link itemprop="url" href="https://acphotos.com.tr" />
+      <p>Bakmaya değer hikâyeler.</p>
+      <div>
+        <a href="/albumler/">Albümler</a>
+        <a href="/iletisim/">İletişim</a>
+        <a href="/admin/">Yönetim</a>
+      </div>
+      <small>
+        © {new Date().getFullYear()} ACPhotos
+        {demoMode
+          ? " · Demo fotoğraflar: Unsplash. ACPhotos müşteri çalışmaları değildir."
+          : ""}
+      </small>
+    </footer>
+    <script>
+      import "../scripts/site";
+    </script>
+  </body>
+</html>

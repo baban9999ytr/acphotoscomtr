@@ -1,0 +1,120 @@
+---
+import Layout from "../layouts/Layout.astro";
+import AlbumCard from "../components/AlbumCard.astro";
+import { fixtures } from "../lib/fixtures";
+import { demoMode } from "../lib/model";
+---
+
+<Layout title="Fotoğraf ve görsel hikâyeler">
+  <section class="hero wrap">
+    <div class="hero-copy">
+      <h1 data-hero-title>
+        Işığın izinde.
+        <br />
+        Anın içinde.
+      </h1>
+      <p data-hero-description>
+        Bir bakış, bir his, bir hikâye.
+        <br />
+        Fotoğrafın içinden dünyaya açılan bir pencere.
+      </p>
+      <a class="text-link" href="/albumler/">
+        Albümleri keşfet <span>↗</span>
+      </a>
+    </div>
+    {demoMode && (
+      <>
+        <img
+          class="hero-main"
+          src="/demo/photo-1-1800.webp"
+          srcset="/demo/photo-1-1000.webp 1000w, /demo/photo-1-1800.webp 1800w"
+          sizes="(max-width: 700px) 92vw, 60vw"
+          width="1800"
+          height="1200"
+          alt="Bulutların gölgesinde dağlar; örnek fotoğraf"
+          fetchpriority="high"
+        />
+        <img
+          class="hero-inset"
+          src="/demo/photo-3-480.webp"
+          width="480"
+          height="320"
+          alt="Kayalık kıyı; örnek fotoğraf"
+        />
+      </>
+    )}
+    <div class="hero-bottom">
+      <span>Fotoğrafın diliyle.</span>
+      <a href="#selected">Aşağı kaydır ↓</a>
+    </div>
+  </section>
+  <section id="selected" class="section wrap">
+    <div class="section-heading">
+      <h2>Seçili hikâyeler</h2>
+      <p>
+        Işığın peşinde, farklı bakışların
+        <br />
+        bir araya geldiği albümler.
+      </p>
+    </div>
+    <div class="album-grid" data-public-projects data-featured>
+      {demoMode &&
+        fixtures.projects.map((project) => (
+          <AlbumCard
+            project={project}
+            photo={fixtures.project_images.find(
+              (i) => i.project_id === project.id,
+            )}
+          />
+        ))}
+    </div>
+    {!demoMode && <p class="loading">Albümler yükleniyor…</p>}
+    <a class="text-link" href="/albumler/">
+      Tüm albümler <span>↗</span>
+    </a>
+  </section>
+  {demoMode && (
+    <section class="panorama">
+      <img
+        src="/demo/photo-2-1800.webp"
+        width="1800"
+        height="1200"
+        loading="lazy"
+        alt="Dağ gölünün sakin yüzeyi; örnek fotoğraf"
+      />
+      <p>
+        Bazen bir kare,
+        <br />
+        her şeyi anlatır.
+      </p>
+    </section>
+  )}
+  <section class="section wrap about-preview">
+    <span class="muted">Bakış açımız</span>
+    <div>
+      <h2>
+        Her kare,
+        <br />
+        başka bir bakış.
+      </h2>
+      <p data-about>
+        ACPhotos albümlerini keşfedin; ışığın, mekânın ve anın bir araya geldiği
+        hikâyelere yakından bakın.
+      </p>
+      <a class="text-link" href="/hakkimizda/">
+        ACPhotos hakkında <span>↗</span>
+      </a>
+    </div>
+  </section>
+  <section class="contact-cta wrap">
+    <p>Birlikte düşünelim.</p>
+    <a href="/iletisim/">
+      Bir hikâye
+      <br />
+      başlatalım. <span>↗</span>
+    </a>
+  </section>
+  <script>
+    import "../scripts/public";
+  </script>
+</Layout>

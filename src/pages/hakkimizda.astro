@@ -1,0 +1,44 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { demoMode } from "../lib/model";
+---
+
+<Layout title="Hakkımızda">
+  <section class="wrap section">
+    <div class="page-intro">
+      <h1>
+        Her kare,
+        <br />
+        başka bir bakış.
+      </h1>
+      <p>ACPhotos</p>
+    </div>
+    <div class="about-layout">
+      {demoMode && (
+        <img
+          src="/demo/photo-2-1000.webp"
+          width="1000"
+          height="667"
+          alt="Dağlar arasında bir göl; örnek fotoğraf"
+        />
+      )}
+      <div>
+        <h2>
+          Fotoğrafın
+          <br />
+          içinden bakmak.
+        </h2>
+        <p data-about>
+          ACPhotos albümlerini keşfedin; ışığın, mekânın ve anın bir araya
+          geldiği hikâyelere yakından bakın.
+        </p>
+        <a class="text-link" href="/albumler/">
+          Hikâyeleri keşfet ↗
+        </a>
+      </div>
+    </div>
+  </section>
+  <script>
+    import "../scripts/public";
+  </script>
+</Layout>

@@ -1,0 +1,23 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { buildContent } from "../../lib/build-content";
+export async function getStaticPaths() {
+  const { posts } = await buildContent();
+  return posts.map((p) => ({ params: { slug: p.slug } }));
+}
+---
+
+<Layout title="Blog yazısı">
+  <article
+    class="wrap section prose"
+    data-dynamic-post
+    data-post-slug={Astro.params.slug}
+  >
+    <a href="/blog/">Bloga dön</a>
+    <h1 data-post-title>Yazı yükleniyor…</h1>
+    <div data-post-body></div>
+  </article>
+  <script>
+    import "../../scripts/public";
+  </script>
+</Layout>

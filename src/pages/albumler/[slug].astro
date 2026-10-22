@@ -1,0 +1,74 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Lightbox from "../../components/Lightbox.astro";
+import AlbumCard from "../../components/AlbumCard.astro";
+import { fixtures } from "../../lib/fixtures";
+import { demoMode } from "../../lib/model";
+import { buildContent } from "../../lib/build-content";
+export async function getStaticPaths() {
+  const { projects } = await buildContent();
+  return projects.map((project) => ({ params: { slug: project.slug } }));
+}
+const project = demoMode
+  ? fixtures.projects.find((p) => p.slug === Astro.params.slug)
+  : undefined;
+const photos = project
+  ? fixtures.project_images.filter((i) => i.project_id === project.id)
+  : [];
+---
+
+<Layout title={project?.title ?? "Albüm"} description={project?.description}>
+  <section class="wrap section" data-project-slug={Astro.params.slug}>
+    <a class="muted" href="/albumler/">
+      Albümler /
+    </a>
+    <div class="page-intro">
+      <h1>{project?.title ?? "Albüm yükleniyor…"}</h1>
+      <p data-project-description>{project?.description}</p>
+    </div>
+    {demoMode && (
+      <p class="demo-note">
+        Örnek albüm · Bu fotoğraflar ACPhotos müşteri çalışmaları değildir.
+      </p>
+    )}
+    <div class="gallery" data-gallery>
+      {photos.map((p) => (
+        <button
+          class="gallery-item"
+          data-full={p.paths[2]}
+          data-alt={p.alt}
+          aria-label={`${p.alt} — büyüt`}
+        >
+          <img
+            src={p.paths[1]}
+            srcset={`${p.paths[0]} 480w, ${p.paths[1]} 1000w`}
+            sizes="(max-width:700px) 92vw, 50vw"
+            width={p.width}
+            height={p.height}
+            alt={p.alt}
+            loading="lazy"
+          />
+        </button>
+      ))}
+    </div>
+  </section>
+  {demoMode && project && (
+    <section class="wrap section">
+      <h2>Diğer hikâyeler</h2>
+      <div class="album-grid related">
+        {fixtures.projects
+          .filter((p) => p.id !== project.id)
+          .map((p) => (
+            <AlbumCard
+              project={p}
+              photo={fixtures.project_images.find((i) => i.project_id === p.id)}
+            />
+          ))}
+      </div>
+    </section>
+  )}
+  <Lightbox />
+  <script>
+    import "../../scripts/public";
+  </script>
+</Layout>

@@ -1,0 +1,19 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Lightbox from "../../components/Lightbox.astro";
+---
+
+<Layout title="Albüm">
+  <section class="wrap section" data-dynamic-project>
+    <a href="/albumler/">Albümlere dön</a>
+    <div class="page-intro">
+      <h1 data-project-title>Albüm yükleniyor…</h1>
+      <p data-project-description></p>
+    </div>
+    <div class="gallery" data-gallery></div>
+  </section>
+  <Lightbox />
+  <script>
+    import "../../scripts/public";
+  </script>
+</Layout>

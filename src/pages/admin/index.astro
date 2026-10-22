@@ -1,0 +1,15 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Yönetim paneli" admin>
+  <div id="admin-root">
+    <p class="wrap loading">Yönetim paneli yükleniyor…</p>
+  </div>
+  <noscript>
+    <p class="wrap">Yönetim paneli için JavaScript etkin olmalıdır.</p>
+  </noscript>
+  <script>
+    import "../../scripts/admin";
+  </script>
+</Layout>
