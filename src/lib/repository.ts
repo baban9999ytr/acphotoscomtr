@@ -8,31 +8,17 @@ import {
   type Photo,
 } from "./model";
 import { fixtures } from "./fixtures";
+import { contentConfig } from "./model";
 let client: SupabaseClient | undefined;
 export function supabase() {
   if (client) return client;
-  const url = import.meta.env.PUBLIC_SUPABASE_URL;
-  const key = import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-  if (!url || !key)
-    throw Error(
-      "Supabase bağlantısı yapılandırılmamış. Ortam ayarlarını kontrol edin.",
-    );
   if (
-    !/^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(url) &&
-    !/^http:\/\/127\.0\.0\.1:\d+$/.test(url)
+    contentConfig.mode !== "supabase" ||
+    !contentConfig.url ||
+    !contentConfig.key
   )
-    throw Error("Supabase adresi geçersiz.");
-  if (key.startsWith("sb_secret_"))
-    throw Error("Gizli anahtar tarayıcıda kullanılamaz.");
-  if (key.startsWith("ey")) {
-    try {
-      const payload = JSON.parse(atob(key.split(".")[1]!));
-      if (payload.role !== "anon") throw Error("invalid");
-    } catch {
-      throw Error("Yalnızca yayımlanabilir veya anon anahtar kullanılabilir.");
-    }
-  }
-  return (client = createClient(url, key, {
+    throw Error("Supabase bağlantısı güvenli biçimde yapılandırılmamış.");
+  return (client = createClient(contentConfig.url, contentConfig.key, {
     auth: {
       persistSession: true,
       autoRefreshToken: true,
@@ -59,7 +45,56 @@ async function readLocal(): Promise<Content> {
   return new Promise((resolve, reject) => {
     const tx = db.transaction("content", "readonly");
     const r = tx.objectStore("content").get("main");
-    r.onsuccess = () => resolve(r.result ?? structuredClone(fixtures));
+    r.onsuccess = () => {
+      const data: Content = r.result ?? structuredClone(fixtures);
+      const firstSettings = data.site_settings?.[0] as
+        (Rows["site_settings"] & Record<string, unknown>) | undefined;
+      if (firstSettings && !Object.hasOwn(firstSettings, "photographer_name")) {
+        data.site_settings = [
+          {
+            ...firstSettings,
+            about: fixtures.site_settings[0]!.about,
+            photographer_name: fixtures.site_settings[0]!.photographer_name,
+            photographer_bio: fixtures.site_settings[0]!.photographer_bio,
+            phone: fixtures.site_settings[0]!.phone,
+            email: fixtures.site_settings[0]!.email,
+            instagram: fixtures.site_settings[0]!.instagram,
+          },
+        ];
+        data.projects = data.projects.map((project) => {
+          const refreshed = fixtures.projects.find(
+            (row) => row.id === project.id,
+          );
+          return refreshed
+            ? {
+                ...project,
+                title: refreshed.title,
+                description: refreshed.description,
+                category_id: refreshed.category_id,
+              }
+            : project;
+        });
+        data.project_images = data.project_images.map((photo) => {
+          const refreshed = fixtures.project_images.find(
+            (row) => row.id === photo.id,
+          );
+          return refreshed ? { ...photo, alt: refreshed.alt } : photo;
+        });
+        const knownCategories = new Set(data.categories.map((row) => row.id));
+        data.categories = data.categories.map((category) => {
+          const refreshed = fixtures.categories.find(
+            (row) => row.id === category.id,
+          );
+          return refreshed
+            ? { ...category, name: refreshed.name, slug: refreshed.slug }
+            : category;
+        });
+        data.categories.push(
+          ...fixtures.categories.filter((row) => !knownCategories.has(row.id)),
+        );
+      }
+      resolve(data);
+    };
     r.onerror = () => reject(r.error);
     tx.oncomplete = () => db.close();
   });
@@ -143,24 +178,39 @@ export async function list<K extends Table>(
         );
     }
   } else {
-    let query = supabase()
-      .from(table)
-      .select(
-        !admin && table === "project_images"
-          ? "*, projects!inner(status)"
-          : "*",
-      )
-      .order(table === "site_settings" ? "id" : "sort_order");
-    if (!admin && (table === "projects" || table === "journal_posts"))
-      query = query.eq("status", "published");
-    if (!admin && table === "project_images")
-      query = query.eq("projects.status", "published").eq("deleting", false);
-    const { data, error } = await query;
-    if (error)
-      throw Error(
-        "İçerik alınamadı. Bağlantınızı ve erişim izninizi kontrol edin.",
-      );
-    raw = data ?? [];
+    try {
+      let query = supabase()
+        .from(table)
+        .select(
+          !admin && table === "project_images"
+            ? "*, projects!inner(status)"
+            : "*",
+        )
+        .order(table === "site_settings" ? "id" : "sort_order");
+      if (!admin && (table === "projects" || table === "journal_posts"))
+        query = query.eq("status", "published");
+      if (!admin && table === "project_images")
+        query = query.eq("projects.status", "published").eq("deleting", false);
+      const { data, error } = await query;
+      if (error)
+        throw Error(
+          "İçerik alınamadı. Bağlantınızı ve erişim izninizi kontrol edin.",
+        );
+      raw = data ?? [];
+    } catch (error) {
+      if (admin) throw error;
+      const data = structuredClone(fixtures);
+      raw = data[table];
+      if (table === "projects" || table === "journal_posts")
+        raw = raw.filter((r) => (r as Rows["projects"]).status === "published");
+      if (table === "project_images")
+        raw = data.project_images.filter((i) =>
+          data.projects.some(
+            (p) => p.id === i.project_id && p.status === "published",
+          ),
+        );
+      window.dispatchEvent(new CustomEvent("acphotos:preview-fallback"));
+    }
   }
   return raw
     .map((r) => schemas[table].parse(r) as Rows[K])

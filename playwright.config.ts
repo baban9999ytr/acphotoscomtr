@@ -10,7 +10,7 @@ export default defineConfig({
     trace: "retain-on-failure",
   },
   webServer: {
-    command: "npm run preview -- --port 4322",
+    command: "node scripts/preview-static.mjs",
     url: "http://127.0.0.1:4322",
     reuseExistingServer: true,
     timeout: 120000,

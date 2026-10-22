@@ -6,10 +6,12 @@
 
 - Türkçe koyu editoryal ana sayfa, asimetrik albüm vitrini, kategori filtresi, albüm detayları, galeri ve tam ekran ışık kutusu.
 - Klavye okları, Escape, odak iadesi, dokunma kaydırması, mobil menü ve reduced-motion desteği.
-- Hakkımızda, boş durumlu blog, yazı görüntüleme, yapılandırılabilir iletişim, 404.
+- Arda Cesurtürk için hakkımızda ve iletişim; verilen e-posta, telefon/WhatsApp ve Instagram bağlantıları; düzenlenebilir fotoğrafçı adı/tanıtımı.
+- Türkçe gizlilik, çerez ve kullanım koşulları taslak sayfaları; Supabase kapalıyken de üretilebilen 15 statik rota.
 - Türkçe yönetim: gerçek kayıtlardan istatistikler; albüm/kategori/blog oluşturma, düzenleme ve silme; yayın durumları; kapak, sıralama, alt metin, albüme taşıma; site/hero ayarları.
 - Çoklu yükleme, aşama ilerlemesi, dosya doğrulama, tekrar engelleme, üç WebP varyantı, yeniden deneme ve telafi temizliği.
-- Açıkça etiketlenmiş IndexedDB demo; Supabase adapter, Auth oturumu, ayrı administrator allowlist; private Storage; RLS migration.
+- Açıkça etiketlenmiş IndexedDB demo; eksik/bozuk Supabase yapılandırmasında güvenli yerel mod; public içerik okuma kesintisinde etiketli örnek içerik fallback'i. Auth ve admin yazmaları demo işlemi gibi gösterilmez.
+- Supabase fotoğrafçı alanları için geriye uyumlu ek migration ve gerçek kategori seed'leri; mevcut RLS ve private Storage korunur.
 - SEO kanonik alan adı, sitemap, robots, Open Graph JPEG, Organization microdata; manuel dist-only dağıtım iş akışı ve Cloudflare başlıkları.
 
 ## Mimari kararlar
@@ -29,7 +31,7 @@ Görsel konsept built-in Image Gen ile üretildi, son tarayıcı görüntüleriy
 - `src/pages`, `src/layouts`, `src/components`, `src/styles`: public sayfalar ve tasarım.
 - `src/scripts`: gezinme, galeri, public içerik ve yönetim ekranları.
 - `src/lib`: katı modeller, doğrulama, fixture, repository, yükleme, build-time içerik.
-- `supabase/migrations/20261022060857_initial_content.sql`: altı tablo, RLS, storage politikaları, işlemsel fonksiyonlar.
+- `supabase/migrations/20261022060857_initial_content.sql` ve `20261022070000_business_content.sql`: tablolar, içerik alanları, RLS, storage politikaları, işlemsel fonksiyonlar.
 - `tests`, `scripts/security-tests.mjs`: tarayıcı ve PostgreSQL testleri.
 - `public`: yerel demo varyantları, lisans, SEO ve hosting dosyaları.
 - `.github/workflows/static.yml`: otomatik push tetikleyicisi kaldırıldı, yalnızca manuel dist dağıtımı.
@@ -39,21 +41,24 @@ Eski index.html ve assets.png korunmuştur; yeni uygulama bunları kullanmaz.
 
 ## Çalıştırılan doğrulamalar
 
-| Kontrol                           | Sonuç                                                 |
-| --------------------------------- | ----------------------------------------------------- |
-| Astro / TypeScript                | 0 hata, 0 uyarı, 0 ipucu                              |
-| ESLint                            | Başarılı                                              |
-| Prettier kontrolü                 | Başarılı                                              |
-| Astro static build                | 12 demo sayfası üretildi                              |
-| Chromium E2E                      | 13 test başarılı                                      |
-| PostgreSQL RLS / storage policy   | 19 kontrol başarılı                                   |
-| Production bağımlılık audit       | 0 bilinen açık raporlandı                             |
-| git diff --check                  | Başarılı; yalnızca Windows satır sonu bilgilendirmesi |
-| Gerçek Supabase Auth/Storage HTTP | Engelli / çalıştırılmadı                              |
+| Kontrol                           | Sonuç                                                   |
+| --------------------------------- | ------------------------------------------------------- |
+| Astro / TypeScript                | 0 hata, 0 uyarı, 0 ipucu                                |
+| ESLint                            | Başarılı                                                |
+| Prettier kontrolü                 | Bu değişiklikler biçimli; workflow YAML uyarısı sürüyor |
+| Astro static build                | 15 önizleme rotası üretildi                             |
+| Chromium E2E                      | 13 başarılı; 2 fallback senaryosu ayrı çalıştırıldı     |
+| Supabase yapılandırma matrisi     | 3 test başarılı                                         |
+| Supabase 401 public fallback      | Chromium senaryosu başarılı                             |
+| Eksik Supabase ayarında admin     | Demo giriş ve yerel yazma kapalı; Chromium başarılı     |
+| PostgreSQL RLS / storage policy   | 19 kontrol başarılı                                     |
+| Production bağımlılık audit       | 0 bilinen açık raporlandı                               |
+| git diff --check                  | Kod temiz; açık workflow diff'inde boşluk uyarısı       |
+| Gerçek Supabase Auth/Storage HTTP | Engelli / çalıştırılmadı                                |
 
 Tarayıcı test ortamı `http://127.0.0.1:4322`, Chromium; Browser adlı eklenti/becerisi bulunmadığı için kurulu Playwright kullanıldı. Ana sayfa 360, 390, 768, 1024, 1440 ve 1920 px genişlikte test edildi. Sayfa kimliği, içerik varlığı, ilgili console hatalarının yokluğu, yatay taşma ve ekran görüntüleri kontrol edildi. Mobil menü → kategori → albüm → lightbox → ok tuşları → Escape → odak iadesi geçti. Yönetici albüm oluşturma → iki fotoğraf yükleme → kapak/sıra/alt metin → yayınlama → public görünüm → yayından kaldırma akışı geçti. Kategori/blog, HTML enjeksiyonunun düz metin olarak gösterimi, bozuk dosya reddi, yinelenen fotoğraf reddi, mobil ayar kalıcılığı ve silme onayı da çalıştırıldı.
 
-İlk QA'da Astro dev toolbar test seçicileriyle çakıştı ve bağımlılık kurulumu sırasında dev sunucusu yeniden başladı; testler built-site preview'a taşındı. 404 canonical farkı, font Latin/Latin-ext kapsamı, native dosya seçicinin İngilizce metni ve GSAP lazy import sonrası TypeScript module kapsamı düzeltildi. Son koşu 13/13 başarılıdır.
+İlk QA'da Astro dev toolbar test seçicileriyle çakıştı ve bağımlılık kurulumu sırasında dev sunucusu yeniden başladı; testler built-site statik önizlemesine taşındı. 404 canonical farkı, font Latin/Latin-ext kapsamı, native dosya seçicinin İngilizce metni ve GSAP lazy import sonrası TypeScript module kapsamı düzeltildi. Ayrı tarayıcı testleri Supabase 401 fallback'ini ve eksik yapılandırmada admin yazmalarının kapalı olduğunu doğrular.
 
 ## Performans ölçümü
 
@@ -73,9 +78,9 @@ Kanıtlar: `output/playwright/home-*.png`, `admin-mobile.png`, `admin-desktop.pn
 
 1. Supabase hedefi, yayımlanabilir anahtar ve yetkili hesap; migration'ın onaylı ortamda uygulanması; gerçek Auth/Storage ve negatif HTTP testleri.
 2. Docker motoru çalışmadığı için tam yerel Supabase servisleri başlatılmadı. Hiçbir uzak proje değiştirilmedi.
-3. Eski işletme sitesi erişilemedi. Telefon, e-posta, adres ve sosyal hesaplar doğrulanmadı; boş/configurable bırakıldı. Gerçek müşteri fotoğrafları ve referans ekran görüntüsü gerekli.
+3. Kullanıcının verdiği telefon, e-posta ve Instagram bilgileri siteye işlendi. Gerçek ACPhotos fotoğraf dosyaları verilmediğinden Unsplash örnekleri açıkça demo etiketlidir. Gazetecilik/press görevinin tam unvanı ve doğrulayıcı belgesi paylaşılmadığı için bu iddia sitede yer almaz.
 4. Görsel logo yükleme yerine düzenlenebilir metin logosu vardır. Self-service şifre sıfırlama/MFA ekranı yoktur. Bunlar mevcut özellik gibi sunulmaz.
-5. Yeni içerik temiz URL/sitemap ve SEO değişiklikleri için yeniden derleme; öncesinde çalışan query URL kullanılır. Production build canlı yayınlanmış slug/ayarları okumadan tamamlanmaz.
+5. Yeni içerik temiz URL/sitemap ve SEO değişiklikleri için yeniden derleme; öncesinde çalışan query URL kullanılır. Supabase derleme okuması başarısızsa örnek içerikle tamamlanır; gerçek ve güncel içerik canlı servis doğrulamasına bağlıdır.
 6. Gerçek cihaz Safari/Firefox, erişilebilirlik yardımcı teknolojileri, üretim Web Vitals ve CDN başlıkları ayrı kabul testi gerektirir.
 
 ## Dağıtım durumu

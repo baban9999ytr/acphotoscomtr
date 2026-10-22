@@ -21,6 +21,11 @@ import { demoMode } from "../lib/model";
       <a class="text-link" href="/albumler/">
         Albümleri keşfet <span>↗</span>
       </a>
+      {demoMode && (
+        <p class="demo-disclosure" role="note">
+          Önizleme görselleri: Unsplash · ACPhotos çekimi değildir.
+        </p>
+      )}
     </div>
     {demoMode && (
       <>

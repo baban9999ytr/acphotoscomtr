@@ -56,6 +56,8 @@ export const schemas = {
     hero_title: title,
     hero_description: z.string().max(500),
     about: z.string().max(5000),
+    photographer_name: title,
+    photographer_bio: z.string().max(5000),
     phone: z.string().regex(/^$|^\+[1-9][0-9]{7,14}$/),
     email: z.union([z.literal(""), z.email()]),
     instagram: z
@@ -75,5 +77,8 @@ export type Rows = { [K in Table]: z.infer<(typeof schemas)[K]> };
 export type Project = Rows["projects"];
 export type Photo = Rows["project_images"];
 export type Content = { [K in Table]: Rows[K][] };
-export const demoMode = import.meta.env.PUBLIC_CONTENT_MODE !== "supabase";
+export { runtimeContentConfig } from "./runtime-config.js";
+import { runtimeContentConfig, demoAdminEnabled } from "./runtime-config.js";
+export const contentConfig = runtimeContentConfig();
+export const demoMode = demoAdminEnabled(contentConfig);
 export const uid = () => crypto.randomUUID();

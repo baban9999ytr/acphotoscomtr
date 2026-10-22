@@ -23,6 +23,9 @@ create table public.categories (
  slug text not null unique check(slug ~ '^[a-z0-9]+(-[a-z0-9]+)*$' and length(slug)<=120), sort_order integer not null default 0,
  created_at timestamptz not null default now(), updated_at timestamptz not null default now()
 );
+insert into public.categories(name,slug,sort_order) values
+ ('Spor','spor',0),('Futbol','futbol',1),('Basketbol','basketbol',2),('Tribün & Stadyum','tribun-stadyum',3),
+ ('Portre','portre',4),('Etkinlik','etkinlik',5),('Sosyal Sorumluluk','sosyal-sorumluluk',6);
 create table public.projects (
  id uuid primary key default gen_random_uuid(), title text not null check(length(title) between 1 and 160),
  slug text not null unique check(slug ~ '^[a-z0-9]+(-[a-z0-9]+)*$' and length(slug)<=120),
@@ -54,13 +57,14 @@ create index journal_published_order_idx on public.journal_posts(sort_order) whe
 create table public.site_settings (
  id text primary key check(id='main'), hero_title text not null check(length(hero_title) between 1 and 160),
  hero_description text not null default '' check(length(hero_description)<=500),about text not null default '' check(length(about)<=5000),
+ photographer_name text not null default 'Arda Cesurtürk' check(length(photographer_name)<=160),photographer_bio text not null default '' check(length(photographer_bio)<=5000),
  phone text not null default '' check(phone='' or phone ~ '^\+[1-9][0-9]{7,14}$'),email text not null default '' check(length(email)<=254),
  instagram text not null default '' check(instagram='' or instagram ~ '^https://(www\.)?instagram\.com/[a-zA-Z0-9_.]+/?$'),
  seo_description text not null default '' check(length(seo_description)<=300), hero_image_id text not null default '',
  logo_text text not null default 'ACPhotos' check(length(logo_text) between 1 and 160),
  created_at timestamptz not null default now(),updated_at timestamptz not null default now()
 );
-insert into public.site_settings(id,hero_title,hero_description,about,seo_description) values('main',E'Işığın izinde.\nAnın içinde.','Bir bakış, bir his, bir hikâye.','ACPhotos albümlerini keşfedin.','ACPhotos fotoğraf albümleri ve görsel hikâyeler.');
+insert into public.site_settings(id,hero_title,hero_description,about,photographer_name,photographer_bio,phone,email,instagram,seo_description) values('main',E'Işığın izinde.\nAnın içinde.','Bir bakış, bir his, bir hikâye.','Arşiv başlıkları arasında Gebzespor, Bursaspor–Mardinspor, Bursaspor Tribün & Arena ve Bursaspor Basketbol çekimleri; PUGNOVERDE için 8 Mart Dünya Kadınlar Günü etkinliği (Enes Aydın) ve Batuhan Uzan ile Enes Çelik portreleri yer alıyor. Bu başlıklar kulüp veya marka onayı anlamına gelmez.','Arda Cesurtürk','18 yaşındaki fotoğrafçı Arda Cesurtürk; futbol, basketbol, tribün ve stadyum, portre, etkinlik ve sosyal sorumluluk alanlarında fotoğraf üretiyor. Arşivinde Gebzespor, Bursaspor–Mardinspor, Bursaspor Tribün & Arena ve Bursaspor Basketbol çekimleri; PUGNOVERDE 8 Mart etkinliği (Enes Aydın) ile Batuhan Uzan ve Enes Çelik portreleri bulunuyor. Kulüp veya marka onayı ima edilmez.','+905315172842','cesurturk16@hotmail.com','https://www.instagram.com/acphotos.tr/','ACPhotos fotoğrafçı Arda Cesurtürk’ün spor fotoğrafçılığı çalışmaları.');
 create function private.touch_updated_at() returns trigger language plpgsql set search_path='' as $$ begin new.updated_at=now(); return new; end; $$;
 revoke all on function private.touch_updated_at() from public;
 do $$ declare t text; begin foreach t in array array['categories','projects','project_images','journal_posts','site_settings'] loop

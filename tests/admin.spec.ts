@@ -9,6 +9,10 @@ test("mobil ayarlar, silme onayı ve kalıcılık", async ({ page }) => {
   await page
     .getByLabel("Hakkımızda", { exact: true })
     .fill("Kaydedilen tanıtım metni.");
+  await page.getByLabel("Fotoğrafçı adı", { exact: true }).fill("Arda Test");
+  await page
+    .getByLabel("Fotoğrafçı tanıtımı", { exact: true })
+    .fill("Spor fotoğrafçısı.");
   await page.getByRole("button", { name: "Kaydet", exact: true }).click();
   await expect(page.locator(".status")).toContainText("kaydedildi");
   await page.reload();
@@ -37,8 +41,11 @@ test("mobil ayarlar, silme onayı ve kalıcılık", async ({ page }) => {
     fullPage: true,
   });
   await page.goto("/hakkimizda/");
-  await expect(page.locator("[data-about]")).toHaveText(
-    "Kaydedilen tanıtım metni.",
+  await expect(page.locator("[data-photographer-name]")).toHaveText(
+    "Arda Test",
+  );
+  await expect(page.locator("[data-photographer-bio]")).toHaveText(
+    "Spor fotoğrafçısı.",
   );
 });
 test("albüm, yükleme, kapak, sıralama, yayın ve kaldırma", async ({ page }) => {
@@ -114,11 +121,11 @@ test("kategori, blog ve güvenli metin", async ({ page }) => {
   await page.getByRole("button", { name: "Demoyu aç" }).click();
   await page.getByRole("button", { name: "Kategoriler", exact: true }).click();
   await page.getByRole("button", { name: "Kategori ekle" }).click();
-  await page.getByLabel("Kategori adı").fill("Portre");
-  await page.getByLabel(/Bağlantı adı/).fill("portre");
+  await page.getByLabel("Kategori adı").fill("Portre test");
+  await page.getByLabel(/Bağlantı adı/).fill("portre-test");
   await page.getByRole("button", { name: "Kaydet", exact: true }).click();
   await expect(
-    page.locator(".admin-row").filter({ hasText: "Portre" }),
+    page.locator(".admin-row").filter({ hasText: "Portre test" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Blog", exact: true }).click();
   await page.getByRole("button", { name: "Yeni yazı" }).click();

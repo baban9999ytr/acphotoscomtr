@@ -1,4 +1,4 @@
-import { demoMode, uid, type Rows } from "../lib/model";
+import { contentConfig, demoMode, uid, type Rows } from "../lib/model";
 import * as repo from "../lib/repository";
 import { uploadPhoto } from "../lib/uploads";
 import { el, button, link, message } from "../lib/dom";
@@ -66,7 +66,9 @@ function field(
   input.maxLength =
     name === "body"
       ? 50000
-      : name === "description" || name === "about"
+      : name === "description" ||
+          name === "about" ||
+          name === "photographer_bio"
         ? 5000
         : 500;
   l.append(input);
@@ -153,6 +155,14 @@ async function loginScreen() {
       ),
     );
   } else {
+    if (contentConfig.mode === "local")
+      box.append(
+        el(
+          "p",
+          "Supabase üretim ayarı eksik veya geçersiz. Yönetim oturumu ve kayıt işlemleri etkin değil.",
+          "preview-notice",
+        ),
+      );
     const form = el("form");
     field(form, "E-posta", "email", "", "email", true);
     const pass = field(form, "Şifre", "password", "", "password", true);
@@ -494,6 +504,21 @@ async function settings() {
     );
   } else {
     field(form, "Metin logosu", "logo_text", current.logo_text, "text", true);
+    field(
+      form,
+      "Fotoğrafçı adı",
+      "photographer_name",
+      current.photographer_name,
+      "text",
+      true,
+    );
+    field(
+      form,
+      "Fotoğrafçı tanıtımı",
+      "photographer_bio",
+      current.photographer_bio,
+      "textarea",
+    );
     field(form, "Hakkımızda", "about", current.about, "textarea");
     field(
       form,

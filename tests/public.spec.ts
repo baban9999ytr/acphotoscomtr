@@ -6,6 +6,9 @@ for (const width of [360, 390, 768, 1024, 1440, 1920])
     page.on("pageerror", (e) => errors.push(e.message));
     await page.goto("/");
     await expect(page.locator("h1")).toContainText("Işığın izinde.");
+    await expect(page.locator(".demo-disclosure")).toContainText(
+      "ACPhotos çekimi değildir",
+    );
     await expect(
       page.locator("[data-public-projects] .album-card"),
     ).toHaveCount(3);
@@ -28,10 +31,10 @@ test("mobil menü, filtre, galeri ve klavye", async ({ page }) => {
     .locator("#navigation")
     .getByRole("link", { name: "Albümler", exact: true })
     .click();
-  await page.getByRole("button", { name: "Mimari", exact: true }).click();
+  await page.getByRole("button", { name: "Etkinlik", exact: true }).click();
   await expect(page.locator(".album-card:visible")).toHaveCount(1);
   await page.getByRole("button", { name: "Tümü", exact: true }).click();
-  await page.getByRole("link", { name: /Sessiz zirveler/ }).click();
+  await page.getByRole("link", { name: /Örnek albüm: Spor/ }).click();
   const opener = page.locator("[data-full]").first();
   await opener.click();
   await expect(page.getByRole("dialog")).toBeVisible();
@@ -42,12 +45,15 @@ test("mobil menü, filtre, galeri ve klavye", async ({ page }) => {
   await expect(page.getByRole("dialog")).not.toBeVisible();
   await expect(opener).toBeFocused();
 });
-test("sayfalar, SEO ve doğrulanmamış iletişim", async ({ page }) => {
+test("sayfalar, SEO, iletişim ve hukuk taslakları", async ({ page }) => {
   for (const route of [
     "/albumler/",
     "/hakkimizda/",
     "/blog/",
     "/iletisim/",
+    "/gizlilik-politikasi/",
+    "/cerez-politikasi/",
+    "/kullanim-kosullari/",
     "/404.html",
   ]) {
     await page.goto(route);
@@ -59,7 +65,24 @@ test("sayfalar, SEO ve doğrulanmamış iletişim", async ({ page }) => {
     );
   }
   await page.goto("/iletisim/");
-  await expect(page.locator('a[href^="tel:"],a[href^="mailto:"]')).toHaveCount(
-    0,
+  await expect(page.locator('meta[itemprop="email"]')).toHaveAttribute(
+    "content",
+    "cesurturk16@hotmail.com",
   );
+  await expect(page.locator('meta[itemprop="telephone"]')).toHaveAttribute(
+    "content",
+    "+905315172842",
+  );
+  await expect(
+    page.locator('a[href="mailto:cesurturk16@hotmail.com"]').first(),
+  ).toBeVisible();
+  await expect(page.locator('a[href="tel:+905315172842"]')).toBeVisible();
+  await expect(
+    page.locator('a[href="https://wa.me/905315172842"]'),
+  ).toBeVisible();
+  await expect(
+    page.locator('a[href="https://www.instagram.com/acphotos.tr/"]').first(),
+  ).toBeVisible();
+  await page.goto("/gizlilik-politikasi/");
+  await expect(page.locator(".preview-notice")).toContainText("taslak");
 });

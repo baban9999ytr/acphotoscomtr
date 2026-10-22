@@ -1,18 +1,20 @@
 # ACPhotos
 
-Türkçe fotoğraf portfolyosu ve yönetim paneli. Astro + TypeScript, GSAP, Supabase Auth/PostgreSQL/private Storage.
+Türkçe fotoğraf portfolyosu ve yönetim paneli. Astro + TypeScript, GSAP, Supabase Auth/PostgreSQL/private Storage. İletişim: cesurturk16@hotmail.com · [Instagram](https://www.instagram.com/acphotos.tr/) · [Kaynak kodu](https://github.com/baban9999ytr/acphotoscomtr).
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Yerel site: `http://127.0.0.1:4321`, yönetim: `/admin/`. Varsayılan demo Supabase kimlik bilgileri gerektirmez. Demo verileri yalnızca kullanılan tarayıcıda saklanır.
+Yerel site: `http://127.0.0.1:4321`, yönetim: `/admin/`. Varsayılan yerel önizleme Supabase kimlik bilgileri gerektirmez. Demo verileri yalnızca kullanılan tarayıcıda saklanır. Hukuk sayfaları işletme ve danışman incelemesi bekleyen taslaklardır.
 
 ```sh
 npm run check
 npm run lint
 npm run test:security
+npm run test:config
+npm run test:runtime
 npm run build
 npm test
 ```

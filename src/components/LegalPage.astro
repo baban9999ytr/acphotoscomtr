@@ -1,0 +1,27 @@
+---
+import Layout from "../layouts/Layout.astro";
+import type { LegalDocument } from "../content/legal";
+const { document } = Astro.props as { document: LegalDocument };
+---
+
+<Layout title={document.title} description={document.description}>
+  <section class="wrap section legal-page">
+    <div class="page-intro">
+      <p class="muted">Güncelleme: 22 Ekim 2026</p>
+      <h1>{document.title}</h1>
+      <p>{document.description}</p>
+    </div>
+    <aside class="preview-notice" role="note">
+      Düzenlenebilir taslak. Yayına almadan önce işletme bilgilerini ve gerçek
+      uygulamaları doğrulayın; hukuk danışmanı incelemesi önerilir.
+    </aside>
+    {document.sections.map((section) => (
+      <section class="legal-section">
+        <h2>{section.heading}</h2>
+        {section.paragraphs.map((paragraph) => (
+          <p>{paragraph}</p>
+        ))}
+      </section>
+    ))}
+  </section>
+</Layout>

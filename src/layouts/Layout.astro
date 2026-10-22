@@ -6,8 +6,9 @@ import "@fontsource/manrope/latin-600.css";
 import "@fontsource/cormorant-garamond/latin-400.css";
 import "@fontsource/manrope/latin-ext-600.css";
 import "@fontsource/cormorant-garamond/latin-ext-400.css";
-import { demoMode } from "../lib/model";
+import { contentConfig, demoMode } from "../lib/model";
 import { buildContent } from "../lib/build-content";
+import { fixtures } from "../lib/fixtures";
 
 interface Props {
   title: string;
@@ -16,9 +17,7 @@ interface Props {
 }
 
 // Default fallback settings in case Supabase is down/unconfigured
-const defaultSettings = {
-  seo_description: "ACPhotos - Bakmaya değer hikâyeler.",
-};
+const defaultSettings = fixtures.site_settings[0]!;
 
 let settings = defaultSettings;
 
@@ -28,7 +27,10 @@ try {
     settings = content.settings;
   }
 } catch (error) {
-  console.warn("Supabase content fetch failed, using fallback settings:", error);
+  console.warn(
+    "Supabase content fetch failed, using fallback settings:",
+    error,
+  );
 }
 
 const {
@@ -99,6 +101,12 @@ const path = Astro.url.pathname === "/404/" ? "/404.html" : Astro.url.pathname;
       </nav>
     </header>
     <main id="main">
+      {!demoMode && contentConfig.mode === "local" && (
+        <p class="preview-notice wrap" data-preview-fallback role="status">
+          Supabase yapılandırması eksik veya geçersiz. Gösterilen örnek albümler
+          yalnızca önizlemedir; yönetim işlemleri devre dışıdır.
+        </p>
+      )}
       <slot />
     </main>
     <footer
@@ -110,16 +118,40 @@ const path = Astro.url.pathname === "/404/" ? "/404.html" : Astro.url.pathname;
         ACPhotos
       </a>
       <link itemprop="url" href="https://acphotos.com.tr" />
+      {settings.email && <meta itemprop="email" content={settings.email} />}
+      {settings.phone && <meta itemprop="telephone" content={settings.phone} />}
+      {settings.instagram && (
+        <link itemprop="sameAs" href={settings.instagram} />
+      )}
+      <span
+        itemprop="founder"
+        itemscope
+        itemtype="https://schema.org/Person"
+        hidden
+      >
+        <meta itemprop="name" content={settings.photographer_name} />
+      </span>
       <p>Bakmaya değer hikâyeler.</p>
       <div>
         <a href="/albumler/">Albümler</a>
         <a href="/iletisim/">İletişim</a>
+        <a href="/gizlilik-politikasi/">Gizlilik</a>
+        <a href="/cerez-politikasi/">Çerezler</a>
+        <a href="/kullanim-kosullari/">Kullanım koşulları</a>
+        <a href="mailto:cesurturk16@hotmail.com">E-posta</a>
+        <a
+          href="https://www.instagram.com/acphotos.tr/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Instagram
+        </a>
         <a href="/admin/">Yönetim</a>
       </div>
       <small>
         © {new Date().getFullYear()} ACPhotos
         {demoMode
-          ? " · Demo fotoğraflar: Unsplash. ACPhotos müşteri çalışmaları değildir."
+          ? " · Önizleme: Unsplash örnek görselleri ACPhotos müşteri çalışmaları değildir."
           : ""}
       </small>
     </footer>

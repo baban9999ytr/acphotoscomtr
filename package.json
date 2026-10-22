@@ -12,7 +12,9 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test:security": "node scripts/security-tests.mjs"
+    "test:security": "node scripts/security-tests.mjs",
+    "test:config": "node --test tests/config.test.mjs",
+    "test:runtime": "node scripts/test-runtime-fallback.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "3.7.4",

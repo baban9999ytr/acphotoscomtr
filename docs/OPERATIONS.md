@@ -8,12 +8,12 @@ Node 24 veya üzeri: `npm ci`, `npm run dev`. `http://127.0.0.1:4321` ve `/admin
 
 Bu çalışma uzak proje oluşturmaz veya değiştirmez. Önce proje sahibi hedefi onaylamalıdır.
 
-1. Supabase projesinde migration dosyasını inceleyin. SQL Editor veya Supabase CLI ile `supabase/migrations/` içindeki migration'ı uygulayın. Mevcut dolu projede tablo adlarını ve çakışmaları önce kontrol edin.
+1. Supabase projesinde migration dosyalarını inceleyin. SQL Editor veya Supabase CLI ile `supabase/migrations/` içindeki migration'ları sırayla uygulayın. Mevcut dolu projede tablo adlarını ve çakışmaları önce kontrol edin.
 2. Auth üzerinden yönetici hesabını oluşturun. Herkese açık kaydı kapatın; güçlü parola ve Auth hız sınırlamalarını etkin tutun. Yetki kullanıcı metadata alanından türetilmez.
 3. SQL Editor'da gerçek Auth UUID'sini kullanarak `insert into public.authorized_admins(user_id) values ('GERCEK-AUTH-UUID');` çalıştırın. Bu tabloyu tarayıcıdan değiştirme izni yoktur.
-4. `.env.example` dosyasını `.env` olarak kopyalayın. `PUBLIC_CONTENT_MODE=supabase`, proje URL'si ve publishable anahtarı girin. `service_role` veya `sb_secret_` anahtarı **asla** PUBLIC değişkenine koymayın.
+4. `.env.example` dosyasını `.env` olarak kopyalayın. Varsayılan `PUBLIC_CONTENT_SOURCE=local` ayarı kimlik bilgileri bulunsa bile yerel önizleme kullanır. Supabase için `PUBLIC_CONTENT_SOURCE=supabase`, proje URL'si ve publishable anahtarı girin. Eksik/geçersiz yapılandırma güvenli yerel içerik önizlemesine döner; Supabase istenmişken admin demo oturumu ve yerel yazmalar kapalı kalır. `service_role` veya `sb_secret_` anahtarı **asla** PUBLIC değişkenine koymayın.
 5. Auth Site URL: `https://acphotos.com.tr`. Production'da HTTPS kullanın. Şifre sıfırlama şu an Supabase yöneticisinin kontrolündedir; uygulamada self-service akış yoktur.
-6. `npm run check`, `npm run lint`, `npm run test:security`, `npm run build`. Production derlemesi yayınlanmış slug ve genel ayarları yayımlanabilir anahtarla okur; okuma başarısızsa durur.
+6. `npm run check`, `npm run lint`, `npm run test:security`, `npm run test:config`, `npm run test:runtime`, `npm run build`. Supabase derleme okuması başarısızsa yerel önizleme kabukları üretilir; istemcide başarısız public okumalar etiketli örnek içeriğe döner. Kimlik doğrulama ve yönetim yazmaları canlı Supabase hatası verir, demo işlemine dönüşmez.
 7. Canlı Auth ve Storage testlerini ayrıca tamamlayın: yönetici girişi/çıkışı, yetkisiz hesap reddi, toplu yükleme, kaldırma, farklı tarayıcıdan yayın durumu, doğrudan Storage isteğinde taslak reddi. Yerel PGlite testleri bu servis testlerinin yerine geçmez.
 
 ## Yayın modeli

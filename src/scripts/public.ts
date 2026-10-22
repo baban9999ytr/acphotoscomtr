@@ -88,6 +88,12 @@ async function render() {
     document
       .querySelectorAll("[data-about]")
       .forEach((n) => (n.textContent = settings.about));
+    document
+      .querySelectorAll("[data-photographer-name]")
+      .forEach((n) => (n.textContent = settings.photographer_name));
+    document
+      .querySelectorAll("[data-photographer-bio]")
+      .forEach((n) => (n.textContent = settings.photographer_bio));
     const contact = document.querySelector("[data-contact]");
     if (contact && (settings.phone || settings.email || settings.instagram)) {
       contact.replaceChildren(el("h2", "İletişime geçin"));
@@ -99,8 +105,12 @@ async function render() {
           link("WhatsApp", `https://wa.me/${settings.phone.slice(1)}`),
         );
       }
-      if (settings.instagram)
-        contact.append(link("Instagram", settings.instagram));
+      if (settings.instagram) {
+        const instagram = link("Instagram ↗", settings.instagram);
+        instagram.target = "_blank";
+        instagram.rel = "noopener noreferrer";
+        contact.append(instagram);
+      }
     }
   }
   const grid = document.querySelector<HTMLElement>("[data-public-projects]");
@@ -241,6 +251,17 @@ render().catch((error) => {
   );
   notice.setAttribute("role", "alert");
   document.querySelector("main")?.prepend(notice);
+});
+window.addEventListener("acphotos:preview-fallback", () => {
+  if (document.querySelector("[data-preview-fallback]")) return;
+  const banner = el(
+    "p",
+    "Önizleme modu: Canlı içerik alınamadı. Gösterilen örnek Unsplash görselleri ACPhotos çalışması değildir.",
+    "preview-notice wrap",
+  );
+  banner.dataset.previewFallback = "true";
+  banner.setAttribute("role", "status");
+  document.querySelector("main")?.prepend(banner);
 });
 window.addEventListener("pagehide", () => {
   imageObserver.disconnect();

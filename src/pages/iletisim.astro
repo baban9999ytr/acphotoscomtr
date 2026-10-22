@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { fixtures } from "../lib/fixtures";
 ---
 
 <Layout title="İletişim">
@@ -10,11 +11,28 @@ import Layout from "../layouts/Layout.astro";
         <br />
         başlatalım.
       </h1>
-      <p>Bir fikir, bir an, bir başlangıç.</p>
+      <p>Fotoğrafçı Arda Cesurtürk ile iletişime geçin.</p>
     </div>
     <div class="contact-details" data-contact>
-      <h2>İletişim bilgileri hazırlanıyor.</h2>
-      <p>Doğrulanmış iletişim bilgileri eklendiğinde burada görünecek.</p>
+      <h2>İletişime geçin</h2>
+      <a href={`mailto:${fixtures.site_settings[0]!.email}`}>
+        {fixtures.site_settings[0]!.email}
+      </a>
+      <a href={`tel:${fixtures.site_settings[0]!.phone}`}>+90 531 517 28 42</a>
+      <a
+        href="https://wa.me/905315172842"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        WhatsApp üzerinden yazın ↗
+      </a>
+      <a
+        href={fixtures.site_settings[0]!.instagram}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Instagram ↗
+      </a>
       <a class="text-link" href="/albumler/">
         Bu sırada albümleri keşfedin ↗
       </a>
