@@ -91,7 +91,7 @@ export const legalDocuments: LegalDocument[] = [
       {
         heading: "Site içeriği",
         paragraphs: [
-          "ACPhotos sitesindeki gerçek fotoğraf ve metinlerin hak sahipliği, izinler ve lisans koşulları ilgili içerikle birlikte doğrulanmalıdır. Ziyaretçi içerikleri izinsiz çoğaltmamalı veya ticari amaçla kullanmamalıdır. Demo görünümündeki Unsplash fotoğrafları ACPhotos işleri değildir ve Unsplash lisans koşullarına tabidir.",
+          "ACPhotos sitesindeki gerçek fotoğraf ve metinlerin hak sahipliği, izinler ve lisans koşulları ilgili içerikle birlikte doğrulanmalıdır. Ziyaretçi içerikleri izinsiz çoğaltmamalı veya ticari amaçla kullanmamalıdır. Demo görünümündeki yapay zekâ ile oluşturulmuş görseller ACPhotos işleri değildir.",
         ],
       },
       {

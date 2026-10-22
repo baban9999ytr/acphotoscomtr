@@ -6,7 +6,7 @@ import "@fontsource/manrope/latin-600.css";
 import "@fontsource/cormorant-garamond/latin-400.css";
 import "@fontsource/manrope/latin-ext-600.css";
 import "@fontsource/cormorant-garamond/latin-ext-400.css";
-import { contentConfig, demoMode } from "../lib/model";
+import { demoMode } from "../lib/model";
 import { buildContent } from "../lib/build-content";
 import { fixtures } from "../lib/fixtures";
 
@@ -20,17 +20,22 @@ interface Props {
 const defaultSettings = fixtures.site_settings[0]!;
 
 let settings = defaultSettings;
+let effectiveSource: "demo" | "supabase" | "preview-fallback" = demoMode
+  ? "demo"
+  : "preview-fallback";
 
 try {
   const content = await buildContent();
+  effectiveSource = content.source;
   if (content?.settings) {
     settings = content.settings;
   }
 } catch (error) {
   console.warn(
-    "Supabase content fetch failed, using fallback settings:",
+    "ACPhotos içerik ayarları yüklenemedi; yerel önizleme kullanılıyor.",
     error,
   );
+  effectiveSource = "preview-fallback";
 }
 
 const {
@@ -62,14 +67,14 @@ const path = Astro.url.pathname === "/404/" ? "/404.html" : Astro.url.pathname;
     <meta property="og:image" content="https://acphotos.com.tr/social.jpg" />
     <link rel="icon" href="/favicon.svg" />
     {(admin ||
-      demoMode ||
+      effectiveSource !== "supabase" ||
       path.includes("goruntule") ||
       path.includes("404")) && (
       <meta name="robots" content="noindex, nofollow" />
     )}
     <meta name="twitter:card" content="summary_large_image" />
   </head>
-  <body data-mode={demoMode ? "demo" : "supabase"}>
+  <body data-mode={effectiveSource}>
     <a class="skip" href="#main">
       İçeriğe geç
     </a>
@@ -101,10 +106,10 @@ const path = Astro.url.pathname === "/404/" ? "/404.html" : Astro.url.pathname;
       </nav>
     </header>
     <main id="main">
-      {!demoMode && contentConfig.mode === "local" && (
+      {effectiveSource === "preview-fallback" && (
         <p class="preview-notice wrap" data-preview-fallback role="status">
-          Supabase yapılandırması eksik veya geçersiz. Gösterilen örnek albümler
-          yalnızca önizlemedir; yönetim işlemleri devre dışıdır.
+          Örnek içerik gösteriliyor. Bu fotoğraflar ACPhotos portföyünü temsil
+          etmez.
         </p>
       )}
       <slot />
@@ -150,8 +155,8 @@ const path = Astro.url.pathname === "/404/" ? "/404.html" : Astro.url.pathname;
       </div>
       <small>
         © {new Date().getFullYear()} ACPhotos
-        {demoMode
-          ? " · Önizleme: Unsplash örnek görselleri ACPhotos müşteri çalışmaları değildir."
+        {effectiveSource !== "supabase"
+          ? " · Demo görseller ACPhotos portföyü değildir."
           : ""}
       </small>
     </footer>

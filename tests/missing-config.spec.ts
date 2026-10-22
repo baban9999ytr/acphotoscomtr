@@ -10,7 +10,11 @@ test("missing production config labels public preview and keeps admin writes dis
 }) => {
   await page.goto("/");
   await expect(page.locator("[data-preview-fallback]")).toContainText(
-    "Supabase yapılandırması eksik veya geçersiz",
+    "Örnek içerik gösteriliyor",
+  );
+  await expect(page.locator("body")).toHaveAttribute(
+    "data-mode",
+    "preview-fallback",
   );
   await expect(page.locator(".album-card")).toHaveCount(3);
   await page.goto("/admin/");
@@ -18,4 +22,5 @@ test("missing production config labels public preview and keeps admin writes dis
   await expect(page.locator("#admin-root .preview-notice")).toContainText(
     "Yönetim oturumu ve kayıt işlemleri etkin değil",
   );
+  await expect(page.locator("#admin-root")).toContainText("Canlı Yönetim");
 });

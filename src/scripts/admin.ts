@@ -137,6 +137,13 @@ async function loginScreen() {
   root.replaceChildren();
   const box = el("section", undefined, "login");
   box.append(el("h1", "Yönetim paneli"));
+  box.append(
+    el(
+      "span",
+      demoMode ? "Demo Modu" : "Canlı Yönetim",
+      `admin-mode-indicator${demoMode ? " is-demo" : ""}`,
+    ),
+  );
   feedback = el("p", undefined, "status");
   feedback.setAttribute("aria-live", "polite");
   if (demoMode) {
@@ -159,7 +166,7 @@ async function loginScreen() {
       box.append(
         el(
           "p",
-          "Supabase üretim ayarı eksik veya geçersiz. Yönetim oturumu ve kayıt işlemleri etkin değil.",
+          `Canlı içerik kaynağı kullanılamıyor. Yönetim oturumu ve kayıt işlemleri etkin değil.${contentConfig.reason ? ` Tanılama: ${contentConfig.reason}` : ""}`,
           "preview-notice",
         ),
       );
@@ -234,9 +241,9 @@ async function shell() {
   const notice = el(
     "p",
     demoMode
-      ? "Yerel demo · Bu tarayıcıdaki değişiklikler ziyaretçi görünümüne yansır. Gerçek sunucuya veri gönderilmez."
+      ? "Demo Modu · Bu tarayıcıdaki değişiklikler ziyaretçi görünümüne yansır. Gerçek sunucuya veri gönderilmez."
       : "Canlı içerik · Yayınlama ve yayından kaldırma, ziyaretçilerin bir sonraki sayfa yüklemesine yansır.",
-    "admin-notice",
+    `admin-notice${demoMode ? " is-demo" : ""}`,
   );
   content.append(notice, feedback, view);
   layout.append(nav, content);

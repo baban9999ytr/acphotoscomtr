@@ -1,0 +1,136 @@
+{
+  "football": {
+    "480": {
+      "path": "/demo/football-480.webp",
+      "width": 480,
+      "height": 320,
+      "bytes": 22340
+    },
+    "1000": {
+      "path": "/demo/football-1000.webp",
+      "width": 1000,
+      "height": 667,
+      "bytes": 60648
+    },
+    "1800": {
+      "path": "/demo/football-1800.webp",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 105096
+    }
+  },
+  "basketball": {
+    "480": {
+      "path": "/demo/basketball-480.webp",
+      "width": 480,
+      "height": 320,
+      "bytes": 23330
+    },
+    "1000": {
+      "path": "/demo/basketball-1000.webp",
+      "width": 1000,
+      "height": 667,
+      "bytes": 60000
+    },
+    "1800": {
+      "path": "/demo/basketball-1800.webp",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 103682
+    }
+  },
+  "tribune": {
+    "480": {
+      "path": "/demo/tribune-480.webp",
+      "width": 480,
+      "height": 270,
+      "bytes": 25074
+    },
+    "1000": {
+      "path": "/demo/tribune-1000.webp",
+      "width": 1000,
+      "height": 563,
+      "bytes": 87138
+    },
+    "1800": {
+      "path": "/demo/tribune-1800.webp",
+      "width": 1672,
+      "height": 941,
+      "bytes": 181270
+    }
+  },
+  "portrait": {
+    "480": {
+      "path": "/demo/portrait-480.webp",
+      "width": 480,
+      "height": 600,
+      "bytes": 22086
+    },
+    "1000": {
+      "path": "/demo/portrait-1000.webp",
+      "width": 1000,
+      "height": 1250,
+      "bytes": 63840
+    },
+    "1800": {
+      "path": "/demo/portrait-1800.webp",
+      "width": 1122,
+      "height": 1402,
+      "bytes": 74476
+    }
+  },
+  "event": {
+    "480": {
+      "path": "/demo/event-480.webp",
+      "width": 480,
+      "height": 320,
+      "bytes": 39250
+    },
+    "1000": {
+      "path": "/demo/event-1000.webp",
+      "width": 1000,
+      "height": 667,
+      "bytes": 119426
+    },
+    "1800": {
+      "path": "/demo/event-1800.webp",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 204802
+    }
+  },
+  "community": {
+    "480": {
+      "path": "/demo/community-480.webp",
+      "width": 480,
+      "height": 320,
+      "bytes": 32032
+    },
+    "1000": {
+      "path": "/demo/community-1000.webp",
+      "width": 1000,
+      "height": 667,
+      "bytes": 103980
+    },
+    "1800": {
+      "path": "/demo/community-1800.webp",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 189648
+    }
+  },
+  "photographer": {
+    "480": {
+      "path": "/demo/photographer-480.webp",
+      "width": 480,
+      "height": 600,
+      "bytes": 24690
+    },
+    "1000": {
+      "path": "/demo/photographer-1000.webp",
+      "width": 1000,
+      "height": 1250,
+      "bytes": 70820
+    }
+  }
+}

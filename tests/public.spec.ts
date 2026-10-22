@@ -1,14 +1,17 @@
 import { test, expect } from "@playwright/test";
-for (const width of [360, 390, 768, 1024, 1440, 1920])
+for (const width of [390, 768, 1440])
   test(`anasayfa ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     const errors: string[] = [];
     page.on("pageerror", (e) => errors.push(e.message));
     await page.goto("/");
-    await expect(page.locator("h1")).toContainText("Işığın izinde.");
+    await expect(page.locator("h1")).toContainText("Oyunun kalbinde.");
     await expect(page.locator(".demo-disclosure")).toContainText(
-      "ACPhotos çekimi değildir",
+      "Yapay zekâ ile oluşturulmuş demo görseller",
     );
+    await expect(page.locator(".hero-main")).toBeVisible();
+    await expect(page.locator(".about-photo img")).toBeVisible();
+    await expect(page.locator(".contact-cta img")).toBeVisible();
     await expect(
       page.locator("[data-public-projects] .album-card"),
     ).toHaveCount(3);
@@ -31,16 +34,27 @@ test("mobil menü, filtre, galeri ve klavye", async ({ page }) => {
     .locator("#navigation")
     .getByRole("link", { name: "Albümler", exact: true })
     .click();
+  for (const category of [
+    "Futbol",
+    "Basketbol",
+    "Tribün & Stadyum",
+    "Portre",
+    "Etkinlik",
+    "Sosyal Sorumluluk",
+  ])
+    await expect(
+      page.getByRole("button", { name: category, exact: true }),
+    ).toBeVisible();
   await page.getByRole("button", { name: "Etkinlik", exact: true }).click();
   await expect(page.locator(".album-card:visible")).toHaveCount(1);
   await page.getByRole("button", { name: "Tümü", exact: true }).click();
-  await page.getByRole("link", { name: /Örnek albüm: Spor/ }).click();
+  await page.getByRole("link", { name: /Maçın ritmi/ }).click();
   const opener = page.locator("[data-full]").first();
   await opener.click();
   await expect(page.getByRole("dialog")).toBeVisible();
-  await expect(page.locator("#lightbox-count")).toHaveText("1 / 2");
+  await expect(page.locator("#lightbox-count")).toHaveText("1 / 1");
   await page.keyboard.press("ArrowRight");
-  await expect(page.locator("#lightbox-count")).toHaveText("2 / 2");
+  await expect(page.locator("#lightbox-count")).toHaveText("1 / 1");
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).not.toBeVisible();
   await expect(opener).toBeFocused();

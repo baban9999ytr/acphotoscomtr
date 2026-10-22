@@ -2,7 +2,7 @@
 
 ## Yerel demo
 
-Node 24 veya üzeri: `npm ci`, `npm run dev`. `http://127.0.0.1:4321` ve `/admin/` adreslerini açın. **Demoyu aç** yalnızca yerel demodur; gerçek kimlik doğrulama değildir. Veriler IndexedDB'de, demo giriş işareti sessionStorage'da tutulur. Farklı tarayıcılar aynı veriyi paylaşmaz. Örnek fotoğraflar Unsplash lisanslıdır; ACPhotos müşteri işi değildir. Eski siteden görsel alınmadı. `public/demo/LICENSE.txt` kaynakları içerir.
+Node 24 veya üzeri: `npm ci`, `npm run dev`. `http://127.0.0.1:4321` ve `/admin/` adreslerini açın. **Demoyu aç** yalnızca yerel demodur; gerçek kimlik doğrulama değildir. Veriler IndexedDB'de, demo giriş işareti sessionStorage'da tutulur. Farklı tarayıcılar aynı veriyi paylaşmaz. `public/demo/` içindeki spor fotoğrafları yapay zekâ ile oluşturulmuş önizleme görselleridir; Arda Cesurtürk'ün fotoğrafı veya ACPhotos müşteri işi değildir. Eski ACPhotos sitesinden görsel alınmadı.
 
 ## Supabase kurulumu — onaylı hedefte uygulanacak
 

@@ -1,7 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { demoMode } from "../lib/model";
 import { fixtures } from "../lib/fixtures";
+import { buildContent } from "../lib/build-content";
+const previewMode = (await buildContent()).source !== "supabase";
 ---
 
 <Layout title="Hakkımızda">
@@ -10,22 +11,25 @@ import { fixtures } from "../lib/fixtures";
       <h1 data-photographer-name>
         {fixtures.site_settings[0]!.photographer_name}
       </h1>
-      <p>Fotoğrafçı · Bursa</p>
+      <p>Fotoğrafçı</p>
     </div>
     <div class="about-layout">
-      {demoMode && (
+      <figure class="about-photo" data-preview-visual hidden={!previewMode}>
         <img
-          src="/demo/photo-2-1000.webp"
+          src="/demo/photographer-1000.webp"
           width="1000"
-          height="667"
-          alt="Dağlar arasında bir göl; örnek fotoğraf"
+          height="1250"
+          alt="Saha kenarında çalışan kimliği belirtilmeyen fotoğrafçı; demo görsel, Arda Cesurtürk'ün fotoğrafı değildir"
         />
-      )}
+        <figcaption>
+          Örnek görsel · Arda Cesurtürk'ün fotoğrafı değildir
+        </figcaption>
+      </figure>
       <div>
         <h2>
-          Sahadan
+          Oyunun içinden
           <br />
-          anlatılan hikâyeler.
+          kareler.
         </h2>
         <p data-photographer-bio>
           {fixtures.site_settings[0]!.photographer_bio}

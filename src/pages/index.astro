@@ -2,122 +2,149 @@
 import Layout from "../layouts/Layout.astro";
 import AlbumCard from "../components/AlbumCard.astro";
 import { fixtures } from "../lib/fixtures";
-import { demoMode } from "../lib/model";
+import { buildContent } from "../lib/build-content";
+
+const previewMode = (await buildContent()).source !== "supabase";
 ---
 
-<Layout title="Fotoğraf ve görsel hikâyeler">
+<Layout title="Spor fotoğrafçılığı ve görsel hikâyeler">
   <section class="hero wrap">
     <div class="hero-copy">
       <h1 data-hero-title>
-        Işığın izinde.
+        Oyunun kalbinde.
         <br />
         Anın içinde.
       </h1>
       <p data-hero-description>
-        Bir bakış, bir his, bir hikâye.
-        <br />
-        Fotoğrafın içinden dünyaya açılan bir pencere.
+        Sahanın ritmini, tribünün sesini ve sporcunun içinden geçenleri
+        fotoğraflıyoruz.
       </p>
       <a class="text-link" href="/albumler/">
-        Albümleri keşfet <span>↗</span>
+        Albümleri keşfet <span aria-hidden="true">↗</span>
       </a>
-      {demoMode && (
-        <p class="demo-disclosure" role="note">
-          Önizleme görselleri: Unsplash · ACPhotos çekimi değildir.
-        </p>
-      )}
+      <p class="demo-disclosure" data-demo-disclosure hidden={!previewMode}>
+        Yapay zekâ ile oluşturulmuş demo görseller; ACPhotos portföyü değildir.
+      </p>
     </div>
-    {demoMode && (
-      <>
-        <img
-          class="hero-main"
-          src="/demo/photo-1-1800.webp"
-          srcset="/demo/photo-1-1000.webp 1000w, /demo/photo-1-1800.webp 1800w"
-          sizes="(max-width: 700px) 92vw, 60vw"
-          width="1800"
-          height="1200"
-          alt="Bulutların gölgesinde dağlar; örnek fotoğraf"
-          fetchpriority="high"
-        />
-        <img
-          class="hero-inset"
-          src="/demo/photo-3-480.webp"
-          width="480"
-          height="320"
-          alt="Kayalık kıyı; örnek fotoğraf"
-        />
-      </>
-    )}
+    <img
+      class="hero-main"
+      data-preview-visual
+      hidden={!previewMode}
+      src="/demo/football-1800.webp"
+      srcset="/demo/football-1000.webp 1000w, /demo/football-1800.webp 1536w"
+      sizes="(max-width: 700px) 92vw, 60vw"
+      width="1536"
+      height="1024"
+      alt="Futbol karşılaşmasından yapay zekâ ile oluşturulmuş demo fotoğraf"
+      fetchpriority="high"
+    />
+    <img
+      class="hero-inset"
+      data-preview-visual
+      hidden={!previewMode}
+      src="/demo/basketball-480.webp"
+      width="480"
+      height="320"
+      alt="Basketbol karşılaşmasından yapay zekâ ile oluşturulmuş demo fotoğraf"
+    />
     <div class="hero-bottom">
-      <span>Fotoğrafın diliyle.</span>
-      <a href="#selected">Aşağı kaydır ↓</a>
+      <span>Arda Cesurtürk · Spor fotoğrafçılığı</span>
+      <a href="#selected">Seçili hikâyeler ↓</a>
     </div>
   </section>
+
   <section id="selected" class="section wrap">
     <div class="section-heading">
-      <h2>Seçili hikâyeler</h2>
+      <div>
+        <span class="eyebrow">Albümler</span>
+        <h2>Seçili hikâyeler</h2>
+      </div>
       <p>
-        Işığın peşinde, farklı bakışların
+        Oyundan tribüne, her kare
         <br />
-        bir araya geldiği albümler.
+        başka bir anın izini taşır.
       </p>
     </div>
     <div class="album-grid" data-public-projects data-featured>
-      {demoMode &&
-        fixtures.projects.map((project) => (
-          <AlbumCard
-            project={project}
-            photo={fixtures.project_images.find(
-              (i) => i.project_id === project.id,
-            )}
-          />
-        ))}
+      {previewMode &&
+        fixtures.projects
+          .filter((project) => project.featured)
+          .map((project) => (
+            <AlbumCard
+              project={project}
+              photo={fixtures.project_images.find(
+                (image) => image.project_id === project.id,
+              )}
+            />
+          ))}
     </div>
-    {!demoMode && <p class="loading">Albümler yükleniyor…</p>}
+    {!previewMode && <p class="loading">Albümler yükleniyor…</p>}
     <a class="text-link" href="/albumler/">
-      Tüm albümler <span>↗</span>
+      Tüm albümler <span aria-hidden="true">↗</span>
     </a>
   </section>
-  {demoMode && (
-    <section class="panorama">
-      <img
-        src="/demo/photo-2-1800.webp"
-        width="1800"
-        height="1200"
-        loading="lazy"
-        alt="Dağ gölünün sakin yüzeyi; örnek fotoğraf"
-      />
-      <p>
-        Bazen bir kare,
-        <br />
-        her şeyi anlatır.
-      </p>
-    </section>
-  )}
-  <section class="section wrap about-preview">
-    <span class="muted">Bakış açımız</span>
-    <div>
-      <h2>
-        Her kare,
-        <br />
-        başka bir bakış.
-      </h2>
+
+  <section class="panorama" data-preview-visual hidden={!previewMode}>
+    <img
+      src="/demo/tribune-1800.webp"
+      width="1672"
+      height="941"
+      loading="lazy"
+      alt="Akşam ışığında tribün ve saha; yapay zekâ ile oluşturulmuş demo fotoğraf"
+    />
+    <p>
+      Maç biter.
+      <br />O an kalır.
+    </p>
+  </section>
+
+  <section class="about-preview wrap">
+    <div class="about-copy">
+      <span class="eyebrow">Hakkımızda</span>
+      <h2>Arda Cesurtürk</h2>
       <p data-about>
-        ACPhotos albümlerini keşfedin; ışığın, mekânın ve anın bir araya geldiği
-        hikâyelere yakından bakın.
+        Ben Arda Cesurtürk. Futbol, basketbol ve tribün kültürüne odaklanan
+        fotoğraflarla oyunun içindeki anları kaydediyorum.
       </p>
       <a class="text-link" href="/hakkimizda/">
-        ACPhotos hakkında <span>↗</span>
+        Arda'yı tanıyın <span aria-hidden="true">↗</span>
       </a>
     </div>
+    <figure class="about-photo" data-preview-visual hidden={!previewMode}>
+      <img
+        src="/demo/photographer-1000.webp"
+        width="1000"
+        height="1250"
+        loading="lazy"
+        alt="Saha kenarında çalışan kimliği belirtilmeyen fotoğrafçı; yapay zekâ ile oluşturulmuş demo görsel, Arda Cesurtürk'ün fotoğrafı değildir"
+      />
+      <figcaption>
+        Örnek görsel · Arda Cesurtürk'ün fotoğrafı değildir
+      </figcaption>
+    </figure>
   </section>
-  <section class="contact-cta wrap">
-    <p>Birlikte düşünelim.</p>
-    <a href="/iletisim/">
-      Bir hikâye
-      <br />
-      başlatalım. <span>↗</span>
-    </a>
+
+  <section class="contact-cta">
+    <img
+      data-preview-visual
+      hidden={!previewMode}
+      src="/demo/football-1800.webp"
+      width="1536"
+      height="1024"
+      loading="lazy"
+      alt="Akşam maçında saha kenarı; yapay zekâ ile oluşturulmuş demo fotoğraf"
+    />
+    <div class="contact-content wrap">
+      <p>İletişim</p>
+      <h2>
+        Yeni bir karşılaşmada
+        <br />
+        buluşalım.
+      </h2>
+      <a href="/iletisim/">
+        İletişime geçin <span aria-hidden="true">↗</span>
+      </a>
+    </div>
   </section>
   <script>
     import "../scripts/public";

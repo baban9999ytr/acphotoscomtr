@@ -21,13 +21,21 @@ test("Supabase read outage shows labelled local preview without demo admin login
   );
   await page.goto("/");
   await expect(page.locator("[data-preview-fallback]")).toContainText(
-    "Canlı içerik alınamadı",
+    "Örnek içerik gösteriliyor",
   );
+  await expect(page.locator("body")).toHaveAttribute(
+    "data-mode",
+    "preview-fallback",
+  );
+  await expect(page.locator("body")).not.toContainText(
+    "Supabase yapılandırması eksik veya geçersiz",
+  );
+  await expect(page.locator(".hero-main")).toBeVisible();
   await expect(page.locator("[data-public-projects] .album-card")).toHaveCount(
     3,
   );
   await expect(page.locator("[data-public-projects]")).toContainText(
-    "Örnek albüm: Spor",
+    "Maçın ritmi",
   );
   await page.goto("/admin/");
   await expect(page.getByRole("button", { name: "Demoyu aç" })).toHaveCount(0);

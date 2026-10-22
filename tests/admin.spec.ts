@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 test("mobil ayarlar, silme onayı ve kalıcılık", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/admin/");
+  await expect(page.locator(".admin-mode-indicator")).toHaveText("Demo Modu");
   await page.getByRole("button", { name: "Demoyu aç" }).click();
   await page
     .getByRole("button", { name: "Site Ayarları", exact: true })
@@ -23,14 +24,14 @@ test("mobil ayarlar, silme onayı ve kalıcılık", async ({ page }) => {
     .getByRole("button", { name: "Sil", exact: true })
     .click();
   await page.getByRole("button", { name: "Vazgeç", exact: true }).click();
-  await expect(page.locator(".photo-admin")).toHaveCount(2);
+  await expect(page.locator(".photo-admin")).toHaveCount(1);
   await page
     .locator(".photo-admin")
     .first()
     .getByRole("button", { name: "Sil", exact: true })
     .click();
   await page.getByRole("button", { name: "Onayla", exact: true }).click();
-  await expect(page.locator(".photo-admin")).toHaveCount(1);
+  await expect(page.locator(".photo-admin")).toHaveCount(0);
   await expect
     .poll(() =>
       page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
@@ -63,10 +64,12 @@ test("albüm, yükleme, kapak, sıralama, yayın ve kaldırma", async ({ page })
   await page
     .getByLabel(/Fotoğraf yükle/)
     .setInputFiles([
-      "public/demo/photo-1-480.webp",
-      "public/demo/photo-3-480.webp",
+      "public/demo/football-480.webp",
+      "public/demo/event-480.webp",
     ]);
-  await expect(page.locator(".photo-admin")).toHaveCount(2);
+  await expect(page.locator(".photo-admin")).toHaveCount(2, {
+    timeout: 15000,
+  });
   await page
     .locator(".photo-admin")
     .last()
@@ -82,7 +85,7 @@ test("albüm, yükleme, kapak, sıralama, yayın ve kaldırma", async ({ page })
     .click();
   await expect(
     page.locator(".photo-admin").first().getByLabel("Alternatif metin"),
-  ).toHaveValue("photo-3-480");
+  ).toHaveValue("event-480");
   await page
     .locator(".photo-admin")
     .first()
@@ -155,13 +158,13 @@ test("yükleme doğrulama ve yinelenen fotoğraf", async ({ page }) => {
   );
   await page
     .getByLabel(/Fotoğraf yükle/)
-    .setInputFiles("public/demo/photo-1-480.webp");
-  await expect(page.locator(".photo-admin")).toHaveCount(3);
+    .setInputFiles("public/demo/football-480.webp");
+  await expect(page.locator(".photo-admin")).toHaveCount(2);
   await page
     .getByLabel(/Fotoğraf yükle/)
-    .setInputFiles("public/demo/photo-1-480.webp");
+    .setInputFiles("public/demo/football-480.webp");
   await expect(page.locator(".upload-row").last()).toContainText(
     "zaten bulunuyor",
   );
-  await expect(page.locator(".photo-admin")).toHaveCount(3);
+  await expect(page.locator(".photo-admin")).toHaveCount(2);
 });

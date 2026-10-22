@@ -1,11 +1,14 @@
 import { fixtures } from "./fixtures";
 import { contentConfig, demoMode, schemas } from "./model";
 
+export type EffectiveContentSource = "demo" | "supabase" | "preview-fallback";
+
 let content:
   | Promise<{
       settings: (typeof fixtures.site_settings)[number];
       projects: { slug: string }[];
       posts: { slug: string }[];
+      source: EffectiveContentSource;
     }>
   | undefined;
 
@@ -18,6 +21,7 @@ async function load() {
     settings: fixtures.site_settings[0]!,
     projects: fixtures.projects,
     posts: [],
+    source: demoMode ? ("demo" as const) : ("preview-fallback" as const),
   };
   if (demoMode) return local;
   try {
@@ -40,6 +44,7 @@ async function load() {
       settings: schemas.site_settings.parse(settings[0]),
       projects: projects as { slug: string }[],
       posts: posts as { slug: string }[],
+      source: "supabase" as const,
     };
   } catch {
     console.warn(

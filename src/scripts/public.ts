@@ -1,5 +1,5 @@
 import { list, imageUrl, releaseImages } from "../lib/repository";
-import { el, link, message } from "../lib/dom";
+import { el, link } from "../lib/dom";
 import { demoMode, type Project, type Photo } from "../lib/model";
 const imageObserver = new IntersectionObserver(
   (entries) => {
@@ -135,7 +135,15 @@ async function render() {
         hero.alt = photo.alt;
         hero.width = photo.width;
         hero.height = photo.height;
+        hero.hidden = false;
         hero.removeAttribute("srcset");
+        const contactPhoto =
+          document.querySelector<HTMLImageElement>(".contact-cta img");
+        if (contactPhoto) {
+          contactPhoto.src = hero.src;
+          contactPhoto.alt = photo.alt;
+          contactPhoto.hidden = false;
+        }
       }
     }
     if (grid) {
@@ -243,25 +251,49 @@ async function render() {
   }
 }
 render().catch((error) => {
+  console.error("ACPhotos public content could not be rendered.", error);
   document.querySelector(".loading")?.remove();
   const notice = el(
     "p",
-    `${message(error)} Sayfayı yenileyerek tekrar deneyin.`,
+    "İçerik şu anda yüklenemedi. Lütfen daha sonra yeniden deneyin.",
     "error wrap",
   );
   notice.setAttribute("role", "alert");
   document.querySelector("main")?.prepend(notice);
 });
 window.addEventListener("acphotos:preview-fallback", () => {
+  document.body.dataset.mode = "preview-fallback";
+  document.body.dataset.mediaSource = "demo";
+  document
+    .querySelectorAll<HTMLElement>(
+      "[data-preview-visual], [data-demo-disclosure]",
+    )
+    .forEach((element) => (element.hidden = false));
   if (document.querySelector("[data-preview-fallback]")) return;
   const banner = el(
     "p",
-    "Önizleme modu: Canlı içerik alınamadı. Gösterilen örnek Unsplash görselleri ACPhotos çalışması değildir.",
+    "Örnek içerik gösteriliyor. Bu fotoğraflar ACPhotos portföyünü temsil etmez.",
     "preview-notice wrap",
   );
   banner.dataset.previewFallback = "true";
   banner.setAttribute("role", "status");
   document.querySelector("main")?.prepend(banner);
+});
+window.addEventListener("acphotos:content-live", () => {
+  document.body.dataset.mode = "supabase";
+  document
+    .querySelectorAll("[data-preview-fallback]")
+    .forEach((node) => node.remove());
+  const assets = document.querySelectorAll<HTMLElement>(
+    "[data-preview-visual]",
+  );
+  if (assets.length) {
+    document.body.dataset.mediaSource = "demo";
+    assets.forEach((asset) => (asset.hidden = false));
+    document
+      .querySelectorAll<HTMLElement>("[data-demo-disclosure]")
+      .forEach((notice) => (notice.hidden = false));
+  }
 });
 window.addEventListener("pagehide", () => {
   imageObserver.disconnect();

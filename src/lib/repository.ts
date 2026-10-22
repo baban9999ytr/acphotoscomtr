@@ -43,60 +43,135 @@ function database(): Promise<IDBDatabase> {
 async function readLocal(): Promise<Content> {
   const db = await database();
   return new Promise((resolve, reject) => {
-    const tx = db.transaction("content", "readonly");
-    const r = tx.objectStore("content").get("main");
+    let result: Content | undefined;
+    const tx = db.transaction("content", "readwrite");
+    const store = tx.objectStore("content");
+    const r = store.get("main");
     r.onsuccess = () => {
-      const data: Content = r.result ?? structuredClone(fixtures);
-      const firstSettings = data.site_settings?.[0] as
-        (Rows["site_settings"] & Record<string, unknown>) | undefined;
-      if (firstSettings && !Object.hasOwn(firstSettings, "photographer_name")) {
-        data.site_settings = [
-          {
-            ...firstSettings,
-            about: fixtures.site_settings[0]!.about,
-            photographer_name: fixtures.site_settings[0]!.photographer_name,
-            photographer_bio: fixtures.site_settings[0]!.photographer_bio,
-            phone: fixtures.site_settings[0]!.phone,
-            email: fixtures.site_settings[0]!.email,
-            instagram: fixtures.site_settings[0]!.instagram,
-          },
-        ];
-        data.projects = data.projects.map((project) => {
-          const refreshed = fixtures.projects.find(
-            (row) => row.id === project.id,
+      const stored = r.result as
+        (Content & { _demoSeedVersion?: number }) | undefined;
+      const data: Content = stored ?? structuredClone(fixtures);
+      if ((stored?._demoSeedVersion ?? 0) < 2) {
+        const firstSettings = data.site_settings?.[0] as
+          (Rows["site_settings"] & Record<string, unknown>) | undefined;
+        if (
+          firstSettings &&
+          !Object.hasOwn(firstSettings, "photographer_name")
+        ) {
+          data.site_settings = [
+            {
+              ...firstSettings,
+              about: fixtures.site_settings[0]!.about,
+              photographer_name: fixtures.site_settings[0]!.photographer_name,
+              photographer_bio: fixtures.site_settings[0]!.photographer_bio,
+              phone: fixtures.site_settings[0]!.phone,
+              email: fixtures.site_settings[0]!.email,
+              instagram: fixtures.site_settings[0]!.instagram,
+            },
+          ];
+          data.projects = data.projects.map((project) => {
+            const refreshed = fixtures.projects.find(
+              (row) => row.id === project.id,
+            );
+            return refreshed
+              ? {
+                  ...project,
+                  title: refreshed.title,
+                  description: refreshed.description,
+                  category_id: refreshed.category_id,
+                }
+              : project;
+          });
+          data.project_images = data.project_images.map((photo) => {
+            const refreshed = fixtures.project_images.find(
+              (row) => row.id === photo.id,
+            );
+            return refreshed ? { ...photo, alt: refreshed.alt } : photo;
+          });
+          const knownCategories = new Set(data.categories.map((row) => row.id));
+          data.categories = data.categories.map((category) => {
+            const refreshed = fixtures.categories.find(
+              (row) => row.id === category.id,
+            );
+            return refreshed
+              ? { ...category, name: refreshed.name, slug: refreshed.slug }
+              : category;
+          });
+          data.categories.push(
+            ...fixtures.categories.filter(
+              (row) => !knownCategories.has(row.id),
+            ),
           );
-          return refreshed
-            ? {
-                ...project,
-                title: refreshed.title,
-                description: refreshed.description,
-                category_id: refreshed.category_id,
-              }
-            : project;
-        });
-        data.project_images = data.project_images.map((photo) => {
-          const refreshed = fixtures.project_images.find(
-            (row) => row.id === photo.id,
-          );
-          return refreshed ? { ...photo, alt: refreshed.alt } : photo;
-        });
-        const knownCategories = new Set(data.categories.map((row) => row.id));
-        data.categories = data.categories.map((category) => {
-          const refreshed = fixtures.categories.find(
+        }
+        const demoCategoryIds = new Set(
+          fixtures.categories.map((row) => row.id),
+        );
+        data.categories = data.categories.filter(
+          (category) =>
+            !(category.id.endsWith("000000000001") && category.name === "Spor"),
+        );
+        for (const category of fixtures.categories) {
+          const existing = data.categories.find(
             (row) => row.id === category.id,
           );
-          return refreshed
-            ? { ...category, name: refreshed.name, slug: refreshed.slug }
-            : category;
-        });
-        data.categories.push(
-          ...fixtures.categories.filter((row) => !knownCategories.has(row.id)),
-        );
+          if (existing && demoCategoryIds.has(existing.id))
+            Object.assign(existing, {
+              name: category.name,
+              slug: category.slug,
+            });
+          else if (!existing) data.categories.push(category);
+        }
+        for (const project of fixtures.projects) {
+          const existing = data.projects.find((row) => row.id === project.id);
+          if (!existing) data.projects.push(project);
+          else if (existing.title.startsWith("Örnek albüm:"))
+            Object.assign(existing, {
+              title: project.title,
+              slug: project.slug,
+              description: project.description,
+              category_id: project.category_id,
+              featured: project.featured,
+            });
+        }
+        for (const photo of fixtures.project_images) {
+          const existing = data.project_images.find(
+            (row) => row.id === photo.id,
+          );
+          if (!existing) data.project_images.push(photo);
+          else if (
+            existing.paths.some((path) => /^\/demo\/photo-\d+-/.test(path))
+          )
+            Object.assign(existing, photo, { deleting: existing.deleting });
+        }
+        const storedSettings = data.site_settings[0];
+        if (
+          storedSettings?.about.startsWith(
+            "Arşiv başlıkları arasında Gebzespor,",
+          )
+        )
+          storedSettings.about = fixtures.site_settings[0]!.about;
+        if (
+          storedSettings?.photographer_bio.startsWith(
+            "18 yaşındaki fotoğrafçı Arda Cesurtürk;",
+          )
+        )
+          storedSettings.photographer_bio =
+            fixtures.site_settings[0]!.photographer_bio;
+        (data as Content & { _demoSeedVersion: number })._demoSeedVersion = 2;
+        store.put(data, "main");
       }
-      resolve(data);
+      result = data;
     };
     r.onerror = () => reject(r.error);
-    tx.oncomplete = () => db.close();
+    tx.oncomplete = () => {
+      db.close();
+      if (result) resolve(result);
+      else reject(Error("Yerel içerik okunamadı."));
+    };
+    tx.onerror = () => {
+      db.close();
+      reject(tx.error);
+    };
   });
 }
 async function mutateLocal(change: (data: Content) => void) {
@@ -197,8 +272,15 @@ export async function list<K extends Table>(
           "İçerik alınamadı. Bağlantınızı ve erişim izninizi kontrol edin.",
         );
       raw = data ?? [];
+      if (!admin)
+        window.dispatchEvent(new CustomEvent("acphotos:content-live"));
     } catch (error) {
       if (admin) throw error;
+      if (import.meta.env.DEV)
+        console.warn(
+          "ACPhotos public content read failed; rendering marked demo fixtures.",
+          error,
+        );
       const data = structuredClone(fixtures);
       raw = data[table];
       if (table === "projects" || table === "journal_posts")

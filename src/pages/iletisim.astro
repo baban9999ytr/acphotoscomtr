@@ -1,6 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { fixtures } from "../lib/fixtures";
+import { buildContent } from "../lib/build-content";
+const previewMode = (await buildContent()).source !== "supabase";
 ---
 
 <Layout title="İletişim">
@@ -13,6 +15,15 @@ import { fixtures } from "../lib/fixtures";
       </h1>
       <p>Fotoğrafçı Arda Cesurtürk ile iletişime geçin.</p>
     </div>
+    <figure class="contact-photo" data-preview-visual hidden={!previewMode}>
+      <img
+        src="/demo/tribune-1800.webp"
+        width="1672"
+        height="941"
+        alt="Akşam ışığında tribün ve saha; yapay zekâ ile oluşturulmuş demo fotoğraf"
+      />
+      <figcaption>Yapay zekâ ile oluşturulmuş örnek görsel</figcaption>
+    </figure>
     <div class="contact-details" data-contact>
       <h2>İletişime geçin</h2>
       <a href={`mailto:${fixtures.site_settings[0]!.email}`}>

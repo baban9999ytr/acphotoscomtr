@@ -2,7 +2,7 @@
   --bg: #080808;
   --surface: #111;
   --raised: #191919;
-  --text: #f5f5f3;
+  --text: #f3f2ef;
   --muted: #a0a0a0;
   --line: #292929;
   --gutter: clamp(22px, 5vw, 100px);
@@ -155,7 +155,7 @@ small {
   top: 15px;
 }
 .header {
-  height: 110px;
+  height: 90px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -194,41 +194,49 @@ small {
 }
 .hero {
   position: relative;
-  min-height: 760px;
-  height: calc(100svh - 110px);
+  min-height: 700px;
+  height: min(850px, calc(100svh - 90px));
   max-height: 1000px;
-  padding-top: 9vw;
+  padding-top: clamp(82px, 8.5vw, 135px);
 }
 .hero-copy {
   position: relative;
   z-index: 2;
-  width: 62%;
+  width: 54%;
   pointer-events: none;
 }
 .hero-copy h1 {
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: clamp(70px, 8.5vw, 150px);
+  font-size: clamp(68px, 8.4vw, 132px);
   letter-spacing: -0.035em;
   line-height: 0.95;
 }
 .hero-copy p {
-  max-width: 320px;
-  margin: 36px 0 25px;
+  max-width: 370px;
+  margin: 28px 0 18px;
   font-size: 14px;
 }
 .hero-copy a {
   pointer-events: auto;
 }
 .hero-copy .demo-disclosure {
-  max-width: 320px;
-  margin: 16px 0 0;
-  color: var(--muted);
-  font-size: 11px;
+  max-width: 340px;
+  margin: 10px 0 0;
+  color: #c1beb9;
+  font-size: 10px;
   line-height: 1.6;
+}
+.eyebrow {
+  display: block;
+  margin-bottom: 15px;
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 .preview-notice {
   margin-block: 16px;
-  border-left: 1px solid #8f8068;
+  border-left: 1px solid #777;
   padding: 12px 16px;
   color: var(--muted);
   font-size: 13px;
@@ -250,15 +258,15 @@ small {
   width: 57%;
   height: 68%;
   right: var(--gutter);
-  top: 35px;
-  filter: brightness(0.78);
+  top: 26px;
+  object-position: 58% center;
 }
 .hero-inset {
   position: absolute;
-  width: 16%;
-  height: 29%;
-  left: 40%;
-  bottom: 80px;
+  width: 15%;
+  height: 31%;
+  left: 38%;
+  bottom: 68px;
   z-index: 1;
 }
 .hero-bottom {
@@ -268,23 +276,33 @@ small {
   right: var(--gutter);
   display: flex;
   justify-content: space-between;
-  font-size: 11px;
+  font-size: 10px;
+  letter-spacing: 0.025em;
   color: var(--muted);
+}
+.hero-bottom a {
+  color: var(--text);
+}
+.hero + .section {
+  padding-top: clamp(60px, 7vw, 105px);
 }
 .section-heading {
   display: flex;
   justify-content: space-between;
   align-items: end;
-  margin-bottom: 55px;
+  margin-bottom: 45px;
   gap: 30px;
+}
+.section-heading h2 {
+  font-size: clamp(42px, 5.2vw, 80px);
 }
 .section-heading p {
   font-size: 14px;
 }
 .album-grid {
   display: grid;
-  grid-template-columns: 1.08fr 1fr;
-  gap: 65px 5vw;
+  grid-template-columns: 1.04fr 1fr;
+  gap: 46px 2vw;
   margin-bottom: 45px;
 }
 .album-card:first-child {
@@ -320,19 +338,20 @@ small {
   margin-top: 8px;
 }
 .panorama {
-  height: 65vw;
-  max-height: 650px;
+  height: 34vw;
+  min-height: 280px;
+  max-height: 540px;
   position: relative;
+  overflow: hidden;
 }
 .panorama img {
   width: 100%;
   height: 100%;
-  filter: brightness(0.65);
 }
 .panorama p {
   position: absolute;
   right: var(--gutter);
-  bottom: 55px;
+  bottom: 45px;
   font-family: "Cormorant Garamond", Georgia, serif;
   color: var(--text);
   font-size: clamp(28px, 3vw, 44px);
@@ -340,31 +359,89 @@ small {
 }
 .about-preview {
   display: grid;
-  grid-template-columns: 1fr 1.4fr;
-  gap: 50px;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: center;
+  gap: clamp(44px, 8vw, 120px);
+  padding-block: clamp(90px, 10vw, 150px);
+}
+.about-copy {
+  max-width: 590px;
+}
+.about-copy h2 {
+  font-size: clamp(48px, 6vw, 88px);
 }
 .about-preview p {
   max-width: 500px;
-  margin: 30px 0;
+  margin: 24px 0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(21px, 2vw, 28px);
+  line-height: 1.5;
+}
+.about-photo {
+  margin: 0;
+}
+.about-photo img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-position: 67% center;
+}
+.about-photo figcaption,
+.contact-photo figcaption {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 10px;
 }
 .contact-cta {
-  padding-block: 80px 130px;
-  border-top: 1px solid var(--line);
+  position: relative;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  isolation: isolate;
 }
-.contact-cta p {
-  margin-bottom: 25px;
+.contact-cta > img {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-position: 58% 54%;
 }
-.contact-cta > a {
+.contact-content {
+  width: 100%;
+  padding-block: 75px;
+}
+.contact-content > p,
+.contact-cta--live > p {
+  margin-bottom: 20px;
+  color: var(--text);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.contact-content h2,
+.contact-cta--live h2 {
+  max-width: 800px;
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: clamp(60px, 9vw, 145px);
-  line-height: 0.95;
+  font-size: clamp(54px, 7vw, 104px);
+  font-weight: 400;
   letter-spacing: -0.035em;
-  display: block;
+  line-height: 0.95;
 }
-.contact-cta span {
-  float: right;
-  font-family: Manrope, sans-serif;
-  font-size: 0.6em;
+.contact-content > a,
+.contact-cta--live > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 28px;
+  margin-top: 30px;
+  border-bottom: 1px solid #aaa;
+  padding: 12px 0;
+  font-size: 13px;
+}
+.contact-cta--live {
+  display: block;
+  min-height: unset;
+  padding-block: 90px 120px;
 }
 .footer {
   display: grid;
@@ -385,6 +462,33 @@ small {
 .footer small {
   grid-column: 1/-1;
   font-size: 10px;
+}
+.admin-mode-indicator {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  margin: 0 0 22px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+}
+.admin-mode-indicator.is-demo,
+.admin-notice.is-demo {
+  border-color: #777;
+  color: var(--text);
+}
+.admin-notice.is-demo {
+  border-width: 1px;
+}
+.contact-photo {
+  margin: 55px 0;
+}
+.contact-photo img {
+  width: 100%;
+  max-height: 520px;
+  aspect-ratio: 16 / 8;
+  object-position: center 58%;
 }
 .page-intro {
   display: flex;
@@ -735,14 +839,14 @@ progress {
 }
 @media (max-width: 1000px) {
   .hero {
-    min-height: 670px;
+    min-height: 700px;
   }
   .hero-main {
-    height: 62%;
-    width: 60%;
+    height: 64%;
+    width: 61%;
   }
   .hero-copy p {
-    max-width: 230px;
+    max-width: 290px;
   }
   .admin-layout {
     grid-template-columns: 160px minmax(0, 1fr);
@@ -795,7 +899,7 @@ progress {
   }
   .hero {
     height: auto;
-    min-height: 870px;
+    min-height: 825px;
     padding-top: 35px;
   }
   .hero-copy {
@@ -803,17 +907,22 @@ progress {
     pointer-events: auto;
   }
   .hero-copy h1 {
-    font-size: clamp(64px, 12.7vw, 90px);
+    font-size: clamp(62px, 12.4vw, 78px);
   }
   .hero-copy p {
-    max-width: 300px;
-    margin: 25px 0 10px;
+    max-width: 340px;
+    margin: 22px 0 8px;
+  }
+  .hero-copy .demo-disclosure {
+    max-width: 320px;
+    margin-top: 8px;
+    font-size: 9px;
   }
   .hero-main {
-    top: 390px;
+    top: 380px;
     width: calc(100% - var(--gutter) * 2);
-    height: 330px;
-    filter: brightness(0.88);
+    height: 300px;
+    object-position: 61% center;
   }
   .hero-inset {
     width: 26%;
@@ -831,8 +940,11 @@ progress {
   .section-heading p {
     margin-top: 25px;
   }
+  .section-heading h2 {
+    font-size: clamp(42px, 12vw, 58px);
+  }
   .album-grid {
-    gap: 40px;
+    gap: 36px;
     grid-template-columns: 1fr;
   }
   .album-card:first-child {
@@ -845,14 +957,45 @@ progress {
     padding-top: 17px;
   }
   .panorama {
-    height: 480px;
+    height: 74vw;
+    min-height: 300px;
+    max-height: 400px;
+  }
+  .panorama p {
+    right: var(--gutter);
+    bottom: 28px;
+    font-size: 30px;
   }
   .about-preview {
     grid-template-columns: 1fr;
-    gap: 30px;
+    gap: 34px;
+    padding-block: 82px;
+  }
+  .about-copy h2 {
+    font-size: clamp(48px, 12vw, 62px);
+  }
+  .about-preview p {
+    margin: 20px 0;
+    font-size: 22px;
+  }
+  .about-photo img {
+    aspect-ratio: 4 / 3;
+    object-position: 68% 38%;
   }
   .contact-cta {
-    padding-block: 60px 90px;
+    min-height: 380px;
+  }
+  .contact-content {
+    padding-block: 55px;
+  }
+  .contact-content h2 {
+    font-size: clamp(48px, 12vw, 64px);
+  }
+  .contact-photo {
+    margin: 40px 0;
+  }
+  .contact-photo img {
+    aspect-ratio: 4 / 3;
   }
   .footer {
     gap: 30px;
