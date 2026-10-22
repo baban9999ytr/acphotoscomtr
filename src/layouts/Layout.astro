@@ -8,17 +8,35 @@ import "@fontsource/manrope/latin-ext-600.css";
 import "@fontsource/cormorant-garamond/latin-ext-400.css";
 import { demoMode } from "../lib/model";
 import { buildContent } from "../lib/build-content";
+
 interface Props {
   title: string;
   description?: string;
   admin?: boolean;
 }
-const { settings } = await buildContent();
+
+// Default fallback settings in case Supabase is down/unconfigured
+const defaultSettings = {
+  seo_description: "ACPhotos - Bakmaya değer hikâyeler.",
+};
+
+let settings = defaultSettings;
+
+try {
+  const content = await buildContent();
+  if (content?.settings) {
+    settings = content.settings;
+  }
+} catch (error) {
+  console.warn("Supabase content fetch failed, using fallback settings:", error);
+}
+
 const {
   title,
-  description = settings.seo_description,
+  description = settings.seo_description ?? defaultSettings.seo_description,
   admin = false,
 } = Astro.props;
+
 const path = Astro.url.pathname === "/404/" ? "/404.html" : Astro.url.pathname;
 ---
 
