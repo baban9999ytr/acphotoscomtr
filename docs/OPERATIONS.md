@@ -16,6 +16,10 @@ Bu çalışma uzak proje oluşturmaz veya değiştirmez. Önce proje sahibi hede
 6. `npm run check`, `npm run lint`, `npm run test:security`, `npm run test:config`, `npm run test:runtime`, `npm run build`. Supabase derleme okuması başarısızsa yerel önizleme kabukları üretilir; istemcide başarısız public okumalar etiketli örnek içeriğe döner. Kimlik doğrulama ve yönetim yazmaları canlı Supabase hatası verir, demo işlemine dönüşmez.
 7. Canlı Auth ve Storage testlerini ayrıca tamamlayın: yönetici girişi/çıkışı, yetkisiz hesap reddi, toplu yükleme, kaldırma, farklı tarayıcıdan yayın durumu, doğrudan Storage isteğinde taslak reddi. Yerel PGlite testleri bu servis testlerinin yerine geçmez.
 
+### İletişim formu mesajları
+
+`20261022143000_contact_messages.sql` migration'ı `contact_messages` tablosunu ve `submit_contact_message` RPC'sini ekler. Anon ziyaretçi yalnızca doğrulamalı gönderim fonksiyonunu çağırabilir; tabloyu okuyamaz veya doğrudan kayıt ekleyemez. Kayıtları Supabase Dashboard → Table Editor → `contact_messages` içinden yetkili proje yöneticisi kontrol eder. Uygulama e-posta bildirimi göndermez. Formda honeypot ve aynı e-posta adresi için dakikada bir gönderim sınırı vardır; bu temel önlemler CAPTCHA/IP hız sınırlaması yerine geçmez. Saklama süresi ve KVKK metni canlıya çıkmadan önce işletme sahibi tarafından belirlenmelidir.
+
 ## Yayın modeli
 
 Sayfa kabukları statik Astro'dur. Production albümleri ve blog içerikleri istemcide Supabase'den okunur; **her yeni sayfa yüklemesinde** yayın durumu yeniden sorgulanır. RLS taslakları ve taslaklara ait özel depolama dosyalarını gizler. Yönetici oturumu açık olsa bile public repository yalnızca published kayıtları ister.

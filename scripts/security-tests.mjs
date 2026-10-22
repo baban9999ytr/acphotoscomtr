@@ -85,15 +85,54 @@ for (const [name, user] of [
       `insert into public.authorized_admins(user_id) values('${other}')`,
       "self-escalation denied",
     );
+    await count(
+      "select count(*) n from public.contact_messages",
+      0,
+      "nonadmin cannot read contact messages",
+    );
   } else {
     await denied(
       "update public.projects set title='Bad'",
       "anon update denied",
     );
     await denied("delete from public.projects", "anon delete denied");
+    await denied(
+      "select * from public.contact_messages",
+      "anon cannot read contact messages",
+    );
+    await denied(
+      "insert into public.contact_messages(name,email,message) values('Bad','bad@example.com','Not allowed direct insert')",
+      "anon cannot directly insert contact messages",
+    );
+    const accepted = await db.query(
+      "select public.submit_contact_message($1,$2,$3,$4) accepted",
+      ["Test Visitor", "visitor@example.com", "This is a sample inquiry.", ""],
+    );
+    assert.equal(accepted.rows[0].accepted, true);
+    checks++;
+    console.log("PASS anon submits contact message through validated function");
+    const trapped = await db.query(
+      "select public.submit_contact_message($1,$2,$3,$4) accepted",
+      ["Bot", "bot@example.com", "Automated form message.", "https://spam.example"],
+    );
+    assert.equal(trapped.rows[0].accepted, false);
+    checks++;
+    console.log("PASS contact honeypot silently drops bot submission");
+    const repeated = await db.query(
+      "select public.submit_contact_message($1,$2,$3,$4) accepted",
+      ["Test Visitor", "visitor@example.com", "A repeated sample inquiry.", ""],
+    );
+    assert.equal(repeated.rows[0].accepted, false);
+    checks++;
+    console.log("PASS repeated contact submission is throttled");
   }
 }
 await role("authenticated", admin);
+await count(
+  "select count(*) n from public.contact_messages",
+  1,
+  "admin can read contact messages",
+);
 await db.exec(
   `select public.reorder_projects(array['${draft}','${project}']::uuid[])`,
 );

@@ -37,6 +37,8 @@ test("Supabase read outage shows labelled local preview without demo admin login
   await expect(page.locator("[data-public-projects]")).toContainText(
     "Maçın ritmi",
   );
+  await page.goto("/iletisim/");
+  await expect(page.getByRole("button", { name: /Mesajı gönder/ })).toBeEnabled();
   await page.goto("/admin/");
   await expect(page.getByRole("button", { name: "Demoyu aç" })).toHaveCount(0);
   await expect(page.getByLabel("E-posta")).toBeVisible();

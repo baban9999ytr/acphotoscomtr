@@ -1,7 +1,9 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import {
+  contactSubmissionSchema,
   schemas,
   demoMode,
+  type ContactSubmission,
   type Table,
   type Rows,
   type Content,
@@ -379,6 +381,23 @@ export async function isAdmin() {
     .eq("user_id", user.id)
     .maybeSingle();
   return !err && !!data;
+}
+export async function submitContactMessage(input: ContactSubmission) {
+  const parsed = contactSubmissionSchema.safeParse(input);
+  if (!parsed.success)
+    throw Error("Lütfen adınızı, geçerli e-posta adresinizi ve mesajınızı kontrol edin.");
+  if (contentConfig.mode !== "supabase")
+    throw Error("Demo önizlemede form gönderimi etkin değil.");
+
+  const { data, error } = await supabase().rpc("submit_contact_message", {
+    p_name: parsed.data.name,
+    p_email: parsed.data.email,
+    p_message: parsed.data.message,
+    p_website: parsed.data.website,
+  });
+  if (error)
+    throw Error("Mesajınız gönderilemedi. Lütfen e-posta veya WhatsApp ile ulaşın.");
+  return data === true;
 }
 export async function login(email: string, password: string) {
   const { error } = await supabase().auth.signInWithPassword({

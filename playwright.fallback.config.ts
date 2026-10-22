@@ -2,7 +2,11 @@ import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
   testDir: "./tests",
-  testMatch: ["fallback.spec.ts", "missing-config.spec.ts"],
+  testMatch: [
+    "fallback.spec.ts",
+    "missing-config.spec.ts",
+    "contact-form.spec.ts",
+  ],
   fullyParallel: false,
   workers: 1,
   timeout: 45000,

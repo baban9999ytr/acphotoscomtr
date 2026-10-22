@@ -9,6 +9,13 @@ const slug = z
   )
   .max(120);
 const status = z.enum(["draft", "published"]);
+export const contactSubmissionSchema = z.object({
+  name: z.string().trim().min(2).max(100),
+  email: z.email().trim().max(254),
+  message: z.string().trim().min(10).max(4000),
+  website: z.string().max(500).default(""),
+});
+export type ContactSubmission = z.infer<typeof contactSubmissionSchema>;
 export const schemas = {
   categories: z.object({
     id,

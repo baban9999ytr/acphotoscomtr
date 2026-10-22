@@ -26,7 +26,9 @@ export const legalDocuments: LegalDocument[] = [
       {
         heading: "İşlenen bilgiler ve amaçlar",
         paragraphs: [
-          "Kamuya açık portfolyo sayfalarında albüm ve fotoğraf içerikleri gösterilir. Ziyaretçi iletişim formu, üyelik, analitik veya reklam pikseli bulunmamaktadır. E-posta, telefon, WhatsApp veya Instagram üzerinden kullanıcı kendi isteğiyle iletişim kurarsa, ilgili iletişim kanalı üzerinden ilettiği bilgiler yanıt vermek amacıyla işlenebilir. Bu kanalların kendi gizlilik koşulları ayrıca geçerlidir.",
+          "Kamuya açık portfolyo sayfalarında albüm ve fotoğraf içerikleri gösterilir. Supabase bağlantısı etkin olduğunda iletişim formunda ad, e-posta adresi ve mesaj; talebe yanıt vermek amacıyla alınır ve ACPhotos Supabase veritabanında saklanır. Saklama süresi ve barındırma/veri konumu işletme sahibi tarafından netleştirilmelidir: " +
+            review +
+            " E-posta, telefon, WhatsApp veya Instagram üzerinden kullanıcı kendi isteğiyle iletişim kurarsa, ilgili iletişim kanalı üzerinden ilettiği bilgiler de yanıt vermek amacıyla işlenebilir. Bu kanalların kendi gizlilik koşulları ayrıca geçerlidir. Demo Modu'nda form gönderimi kapalıdır.",
           "Site işletim kayıtlarının (ör. IP adresi ve istek zamanı) barındırma sağlayıcısı tarafından işlenip işlenmediği ve süresi sağlayıcı sözleşmesiyle doğrulanmalıdır: " +
             review,
         ],
@@ -97,13 +99,13 @@ export const legalDocuments: LegalDocument[] = [
       {
         heading: "Kullanım",
         paragraphs: [
-          "Siteyi hukuka uygun biçimde kullanın; güvenliği, erişilebilirliği veya diğer kullanıcıların kullanımını bozacak girişimlerde bulunmayın. Bu sitede satın alma, üyelik veya çevrimiçi gönderim işlevi yoktur.",
+          "Siteyi hukuka uygun biçimde kullanın; güvenliği, erişilebilirliği veya diğer kullanıcıların kullanımını bozacak girişimlerde bulunmayın. Bu sitede satın alma veya üyelik yoktur. Supabase bağlantısı etkin olduğunda iletişim formu mesajları ACPhotos'a iletir.",
         ],
       },
       {
         heading: "İletişim ve koşulların tamamlanması",
         paragraphs: [
-          "İletişim: Arda Cesurtürk · cesurturk16@hotmail.com · +90 531 517 28 42. İşletmenin hukuki statüsü, uygulanacak hukuk, sorumluluk sınırları, telif/lisans bildirim ve uyuşmazlık usulleri hukuk danışmanıyla doğrulanmalıdır: " +
+          "İletişim: Arda Cesurtürk · cesurturk16@hotmail.com · +90 531 517 28 42. İletişim formuyla gönderilen bilgiler yanıt vermek için Supabase veritabanında işlenir. İşletmenin hukuki statüsü, uygulanacak hukuk, sorumluluk sınırları, telif/lisans bildirim ve uyuşmazlık usulleri hukuk danışmanıyla doğrulanmalıdır: " +
             review,
         ],
       },

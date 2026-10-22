@@ -1,6 +1,27 @@
 import { list, imageUrl, releaseImages } from "../lib/repository";
 import { el, link } from "../lib/dom";
 import { demoMode, type Project, type Photo } from "../lib/model";
+function contactMethod(label: string, value: string, href: string) {
+  const anchor = link("", href, "contact-method");
+  const copy = el("span", undefined, "contact-method-copy");
+  copy.append(
+    el("span", label, "contact-method-label"),
+    el("span", value, "contact-method-value"),
+  );
+  anchor.append(copy, el("span", "↗", "contact-method-arrow"));
+  anchor.lastElementChild?.setAttribute("aria-hidden", "true");
+  if (href.startsWith("https://")) {
+    anchor.target = "_blank";
+    anchor.rel = "noopener noreferrer";
+  }
+  return anchor;
+}
+function formatPhone(phone: string) {
+  const digits = phone.replace(/\D/g, "");
+  return digits.length === 12 && digits.startsWith("90")
+    ? `+90 ${digits.slice(2, 5)} ${digits.slice(5, 8)} ${digits.slice(8, 10)} ${digits.slice(10)}`
+    : phone;
+}
 const imageObserver = new IntersectionObserver(
   (entries) => {
     for (const entry of entries) {
@@ -96,21 +117,44 @@ async function render() {
       .forEach((n) => (n.textContent = settings.photographer_bio));
     const contact = document.querySelector("[data-contact]");
     if (contact && (settings.phone || settings.email || settings.instagram)) {
-      contact.replaceChildren(el("h2", "İletişime geçin"));
+      contact.replaceChildren(
+        el("span", `${settings.photographer_name} · Fotoğrafçı`, "eyebrow"),
+        el("h2", "Konuşalım."),
+        el(
+          "p",
+          "Projenizi veya etkinliğinizi kısaca anlatın; size en uygun kanaldan ulaşabilirsiniz.",
+          "contact-note",
+        ),
+      );
+      const methods = el("div", undefined, "contact-methods");
       if (settings.email)
-        contact.append(link(settings.email, `mailto:${settings.email}`));
+        methods.append(
+          contactMethod("E-posta", settings.email, `mailto:${settings.email}`),
+        );
       if (settings.phone) {
-        contact.append(
-          link(settings.phone, `tel:${settings.phone}`),
-          link("WhatsApp", `https://wa.me/${settings.phone.slice(1)}`),
+        methods.append(
+          contactMethod("Telefon", formatPhone(settings.phone), `tel:${settings.phone}`),
+          contactMethod(
+            "WhatsApp",
+            "Mesaj gönderin",
+            `https://wa.me/${settings.phone.replace(/\D/g, "")}`,
+          ),
         );
       }
       if (settings.instagram) {
-        const instagram = link("Instagram ↗", settings.instagram);
-        instagram.target = "_blank";
-        instagram.rel = "noopener noreferrer";
-        contact.append(instagram);
+        const name = settings.instagram
+          .replace(/^https:\/\/(www\.)?instagram\.com\//, "@")
+          .replace(/\/$/, "");
+        methods.append(contactMethod("Instagram", name, settings.instagram));
       }
+      contact.append(methods);
+      const albums = link("", "/albumler/", "contact-albums-link");
+      albums.append(
+        el("span", "Albümleri keşfedin"),
+        el("span", "↗"),
+      );
+      albums.lastElementChild?.setAttribute("aria-hidden", "true");
+      contact.append(albums);
     }
   }
   const grid = document.querySelector<HTMLElement>("[data-public-projects]");

@@ -100,3 +100,25 @@ test("sayfalar, SEO, iletişim ve hukuk taslakları", async ({ page }) => {
   await page.goto("/gizlilik-politikasi/");
   await expect(page.locator(".preview-notice")).toContainText("taslak");
 });
+for (const width of [390, 768, 1440])
+  test(`iletişim sayfası ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/iletisim/");
+    await expect(page.locator("h1")).toContainText("Yeni bir hikâye");
+    await expect(page.locator(".contact-layout")).toBeVisible();
+    await expect(page.locator(".contact-method")).toHaveCount(4);
+    await expect(page.locator(".contact-photo img")).toBeVisible();
+    await expect(page.locator("[data-contact-form]")).toBeVisible();
+    await expect(
+      page.locator("[data-contact-form] [name=message]"),
+    ).toBeVisible();
+    await expect
+      .poll(() =>
+        page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+      )
+      .toBe(true);
+    await page.screenshot({
+      path: `output/playwright/contact-${width}.png`,
+      fullPage: true,
+    });
+  });

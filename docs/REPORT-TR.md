@@ -8,17 +8,20 @@ Onaylı editoryal referans bu fazda erişilebilirdi ve incelendi: `C:\Users\KRR\
 
 Önizleme artık derleme anında kullanılan içerik kaynağını `data-mode` ile işaretler: `demo`, `supabase` veya `preview-fallback`. Supabase yapılandırma ve okuma tanıları yalnızca yönetici tanı ekranında veya geliştirici konsolunda gösterilir. Kamuya açık hata metni yoktur; fallback halinde Türkçe örnek içerik açıklaması ve yönetimde `Demo Modu` rozeti görünür. İstemci isteği sonradan hata verirse fallback olayı DOM modunu ve demo medyasını birlikte günceller.
 
-Bu fazın ekran görüntüleri: `output/playwright/home-390.png`, `home-768.png` ve `home-1440.png`. Faz 5 doğrulamaları ve son test sonuçları aşağıdaki tabloda yer alır; önceki faza ait ölçüm ve gözlemler tarihsel kayıt olarak korunmuştur.
+İletişim sayfasının mevcut düzenine küçük bir form eklendi. Gönderimler yeni `contact_messages` tablosuna yalnızca doğrulamalı RPC üzerinden yazılır; anonim ziyaretçiler tabloyu okuyamaz veya doğrudan yazamaz. Yönetici kayıtları Supabase Table Editor'dan görür. Form e-posta bildirimi göndermez; honeypot ve e-posta başına bir dakikalık tekrar sınırı içerir.
+
+Bu fazın ekran görüntüleri: `output/playwright/home-390.png`, `home-768.png`, `home-1440.png` ve iletişim formu için `contact-390.png`, `contact-768.png`, `contact-1440.png`. Faz 5 doğrulamaları ve son test sonuçları aşağıdaki tabloda yer alır; önceki faza ait ölçüm ve gözlemler tarihsel kayıt olarak korunmuştur.
 
 | Faz 5 kontrolü | Sonuç |
 | --- | --- |
-| `npm run check` | 45 dosya; 0 hata, 0 uyarı, 0 ipucu |
+| `npm run check` | 47 dosya; 0 hata, 0 uyarı, 0 ipucu |
 | `npm run lint` | Başarılı |
 | `npm run build` | Başarılı; 18 statik rota |
-| `npm test` | 10 başarılı; fallback için 2 özel senaryo bu komutta atlanır |
-| `npm run test:runtime` | Supabase 401 fallback ve eksik ayar senaryoları ayrı Chromium testlerinde başarılı |
+| `npm test` | 13 başarılı; yapılandırmaya bağlı 3 senaryo bu komutta atlanır |
+| `npm run test:runtime` | Supabase 401 fallback, form RPC gönderimi ve eksik ayar senaryoları ayrı Chromium testlerinde başarılı |
 | `npm run test:config` | 3 başarılı |
-| `npm run test:security` | 19 yerel PostgreSQL politika/işlem kontrolü başarılı |
+| `npm run test:security` | 26 yerel PostgreSQL politika/işlem kontrolü başarılı; form RLS, doğrulama, honeypot ve tekrar sınırı dahil |
+| Supabase form RPC tarayıcı testi | Sahte Supabase HTTP yanıtıyla alan gönderimi ve başarı durumu başarılı |
 | Gerçek Supabase Auth/Storage HTTP | Bu ortamda çalıştırılmadı; canlı proje doğrulanmadı |
 
 Tarayıcı doğrulaması 390, 768 ve 1440 px tam sayfa görüntüleri, public/legal/contact rotaları, mobil menü, kategori filtresi, galeri/lightbox ve demo admin oluşturma-yükleme-yayınlama akışlarını kapsar. Referansın koyu editoryal düzeni ve fotoğraf yerleşimleri korunmuştur; spor içerikleri ve yapay zekâ demo kareleri nedeniyle fotoğraf konusu ve görsel ayrıntılar birebir aynı değildir.

@@ -25,6 +25,17 @@ for (const [command, args, extraEnv] of [
     ],
     { ...env, ACPHOTOS_FALLBACK_TEST: "1" },
   ],
+  [process.execPath, ["node_modules/astro/bin/astro.mjs", "build"], env],
+  [
+    process.execPath,
+    [
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config=playwright.fallback.config.ts",
+      "tests/contact-form.spec.ts",
+    ],
+    { ...env, ACPHOTOS_CONTACT_TEST: "1" },
+  ],
   [
     process.execPath,
     ["node_modules/astro/bin/astro.mjs", "build"],
